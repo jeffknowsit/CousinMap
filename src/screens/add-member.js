@@ -621,6 +621,23 @@ async function saveMember() {
     }
 
     try {
+      const allMembers = await FamilyRepository.getAll();
+      const phone_formatted = phone ? `+91${phone.replace(/\s/g, '')}` : '';
+      
+      const isDuplicate = allMembers.some(m => 
+        (m.name.toLowerCase() === name.toLowerCase()) && 
+        (m.phone_number === phone_formatted || m.email === email)
+      );
+      
+      if (isDuplicate) {
+        if (saveBtn) {
+          saveBtn.innerHTML = 'Save Member';
+          saveBtn.disabled = false;
+        }
+        showSnackbar('A member with this name and contact info already exists.', 'error');
+        return;
+      }
+
       if (profileImageFile) {
         if (saveBtn) {
           saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Processing photo...</span>';
@@ -652,7 +669,7 @@ async function saveMember() {
     showSnackbar(`${name} added successfully!`, 'success');
 
     setTimeout(() => {
-      window.location.hash = `/profile/${member.id}`;
+      window.location.hash = '/home';
     }, 800);
 
   } catch (err) {
