@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Firebase Test</title>
+</head>
+<body>
+  <h1>Testing Firebase</h1>
+  <div id="log"></div>
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+    import { getFirestore, collection, getDocs, getDoc, doc } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey: 'AIzaSyAd2QOUkRw0hXh8UMHaAje2sqUU9tnHNdY',
+      authDomain: 'cousinmap.firebaseapp.com',
+      projectId: 'cousinmap',
+      storageBucket: 'cousinmap.appspot.com',
+      messagingSenderId: '547376046039',
+      appId: '1:547376046039:web:3e2716a44bd78a6db90ab2'
+    };
+
+    function log(msg) {
+      document.getElementById('log').innerHTML += `<p>${msg}</p>`;
+      console.log(msg);
+    }
+
+    log("Initializing app...");
+    try {
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      log("Fetching data from 'family_members'...");
+      
+      const snapshot = await getDocs(collection(db, 'family_members'));
+      log(`Success! Found ${snapshot.size} members.`);
+    } catch (e) {
+      log(`ERROR: ${e.message}`);
+      console.error(e);
+    }
+  </script>
+</body>
+</html>
