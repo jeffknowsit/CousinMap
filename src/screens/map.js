@@ -20,10 +20,7 @@ export default async function MapScreen(container) {
 
   let userLocation = null;
   try {
-    const perm = await LocationService.checkPermission();
-    if (perm === 'granted') {
-      userLocation = await LocationService.getCurrentPosition({ timeout: 5000 });
-    }
+    userLocation = await LocationService.getCurrentPosition({ timeout: 5000 });
   } catch { /* silent */ }
 
   let activeFilter = 'All';
@@ -49,15 +46,7 @@ export default async function MapScreen(container) {
               <span class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></span>
               <span>All (${membersWithLocation.length})</span>
             </button>
-            <button class="map-filter-chip shrink-0 flex items-center gap-1.5 h-8 px-space-md rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-md text-label-md shadow-sm" data-filter="Cousin" type="button">
-              <span>Cousins</span>
-            </button>
-            <button class="map-filter-chip shrink-0 flex items-center gap-1.5 h-8 px-space-md rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-md text-label-md shadow-sm" data-filter="Parent" type="button">
-              <span>Parents</span>
-            </button>
-            <button class="map-filter-chip shrink-0 flex items-center gap-1.5 h-8 px-space-md rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-md text-label-md shadow-sm" data-filter="Sibling" type="button">
-              <span>Siblings</span>
-            </button>
+
             <button class="map-filter-chip shrink-0 flex items-center gap-1.5 h-8 px-space-md rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-md text-label-md shadow-sm" data-filter="Nearby" type="button">
               <span class="material-symbols-outlined text-[15px] text-primary-container">near_me</span>
               <span>Nearby</span>
@@ -304,7 +293,7 @@ function setupMapEvents(allMembers, membersWithLocation, userLocation) {
   }, 300));
 
   // Filter chips
-  document.getElementById('map-filters')?.addEventListener('click', (e) => {
+  document.getElementById('map-filters')?.addEventListener('click', async (e) => {
     const chip = e.target.closest('.map-filter-chip');
     if (!chip) return;
 
@@ -318,11 +307,37 @@ function setupMapEvents(allMembers, membersWithLocation, userLocation) {
     chip.className = chip.className.replace('bg-surface-container-lowest/90 text-on-surface', 'bg-primary-container text-on-primary');
 
     let filtered = membersWithLocation;
-    if (filter === 'Nearby' && userLocation) {
-      filtered = membersWithLocation.filter(m => {
-        const d = calculateDistanceToMember(userLocation.latitude, userLocation.longitude, m.latitude, m.longitude);
-        return d != null && d <= 15;
-      });
+    if (filter === 'Nearby') {
+      if (!userLocation) {
+        try {
+          userLocation = await LocationService.getCurrentPosition({ timeout: 5000 });
+          if (userLocation && map) {
+            if (userMarker) userMarker.setLatLng([userLocation.latitude, userLocation.longitude]);
+            else {
+              const userIcon = L.divIcon({
+                className: 'current-location-marker',
+                html: '<div class="current-location-dot"></div>',
+                iconSize: [16, 16],
+                iconAnchor: [8, 8],
+              });
+              userMarker = L.marker([userLocation.latitude, userLocation.longitude], { icon: userIcon }).addTo(map);
+            }
+          }
+        } catch (err) {
+          const { showSnackbar } = await import('../components/snackbar.js');
+          showSnackbar('Location access required for Nearby filter.', 'error');
+          // Revert chip to All
+          document.querySelector('[data-filter="All"]')?.click();
+          return;
+        }
+      }
+
+      if (userLocation) {
+        filtered = membersWithLocation.filter(m => {
+          const d = calculateDistanceToMember(userLocation.latitude, userLocation.longitude, m.latitude, m.longitude);
+          return d != null && d <= 15;
+        });
+      }
     } else if (filter !== 'All') {
       filtered = membersWithLocation.filter(m =>
         (m.description || '').toLowerCase().includes(filter.toLowerCase())
@@ -332,6 +347,7 @@ function setupMapEvents(allMembers, membersWithLocation, userLocation) {
     addFamilyMarkers(filtered, userLocation);
     if (filtered.length > 0) {
       const bounds = filtered.map(m => [m.latitude, m.longitude]);
+      if (userLocation && filter === 'Nearby') bounds.push([userLocation.latitude, userLocation.longitude]);
       map?.fitBounds(bounds, { padding: [60, 60], maxZoom: 12 });
     }
   });
