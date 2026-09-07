@@ -12,6 +12,7 @@ import 'leaflet/dist/leaflet.css';
 let map = null;
 let markers = [];
 let userMarker = null;
+let radarCircle = null;
 
 export default async function MapScreen(container) {
   const members = await FamilyRepository.getAll();
@@ -117,6 +118,10 @@ export default async function MapScreen(container) {
   return () => {
     if (map) {
       map.remove();
+      if (radarCircle) {
+        radarCircle.remove();
+        radarCircle = null;
+      }
       map = null;
     }
     markers = [];
@@ -341,6 +346,13 @@ function setupMapEvents(allMembers, membersWithLocation, userLocation) {
     chip.className = chip.className.replace('bg-surface-container-lowest/90 text-on-surface', 'bg-primary-container text-on-primary');
 
     let filtered = membersWithLocation;
+    
+    // Clear previous radar circle
+    if (radarCircle) {
+      radarCircle.remove();
+      radarCircle = null;
+    }
+
     if (filter.startsWith('Radar')) {
       const radius = parseInt(filter.replace('Radar', ''));
       if (userLocation) {
@@ -348,6 +360,16 @@ function setupMapEvents(allMembers, membersWithLocation, userLocation) {
           const d = calculateDistanceToMember(userLocation.latitude, userLocation.longitude, m.latitude, m.longitude);
           return d != null && d <= radius;
         });
+        
+        // Draw Radar Circle
+        radarCircle = L.circle([userLocation.latitude, userLocation.longitude], {
+          color: '#10b981',
+          fillColor: '#10b981',
+          fillOpacity: 0.1,
+          weight: 2,
+          dashArray: '4',
+          radius: radius * 1000 // Convert km to meters
+        }).addTo(map);
       }
     } else if (filter !== 'All') {
       filtered = membersWithLocation.filter(m =>
@@ -356,10 +378,18 @@ function setupMapEvents(allMembers, membersWithLocation, userLocation) {
     }
 
     addFamilyMarkers(filtered, userLocation);
-    if (filtered.length > 0) {
+    
+    if (radarCircle) {
+      // Fit bounds to the radar circle itself!
+      map?.fitBounds(radarCircle.getBounds(), { padding: [60, 60], maxZoom: 14 });
+    } else if (filtered.length > 0) {
+      // Normal bounds
       const bounds = filtered.map(m => [m.latitude, m.longitude]);
-      if (userLocation && filter.startsWith('Radar')) bounds.push([userLocation.latitude, userLocation.longitude]);
+      if (userLocation) bounds.push([userLocation.latitude, userLocation.longitude]);
       map?.fitBounds(bounds, { padding: [60, 60], maxZoom: 12 });
+    } else if (userLocation) {
+      // If filtering but no one found, default to user location
+      map?.setView([userLocation.latitude, userLocation.longitude], 12);
     }
   });
 }
