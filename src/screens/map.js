@@ -19,9 +19,35 @@ export default async function MapScreen(container) {
   const memberCount = members.length;
 
   let userLocation = null;
+  let locationError = false;
   try {
     userLocation = await LocationService.getCurrentPosition({ timeout: 5000 });
-  } catch { /* silent */ }
+  } catch {
+    locationError = true;
+  }
+
+  if (locationError) {
+    container.innerHTML = `
+      ${renderHeader('map')}
+      <main class="flex-1 flex flex-col items-center justify-center p-screen-edge-padding text-center relative w-full pt-16 pb-16 bg-surface" style="min-height: calc(100vh - 80px);">
+        <span class="material-symbols-outlined text-[64px] text-error mb-4">location_disabled</span>
+        <h2 class="font-headline-md text-headline-md text-on-surface mb-2">Location Access Required</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-6 max-w-sm">
+          To use the map and radar features, please allow location access in your browser settings.
+        </p>
+        <button id="retry-location-btn" class="flex items-center gap-2 h-12 px-space-xl rounded-full bg-primary-container text-on-primary font-label-lg text-label-lg shadow-sm hover:brightness-105 active:scale-95 transition-all">
+          <span class="material-symbols-outlined text-[20px]">refresh</span>
+          <span>Try Again</span>
+        </button>
+      </main>
+      ${renderBottomNav('map', memberCount)}
+    `;
+
+    document.getElementById('retry-location-btn')?.addEventListener('click', () => {
+      MapScreen(container);
+    });
+    return () => {};
+  }
 
   let activeFilter = 'All';
 
@@ -47,9 +73,17 @@ export default async function MapScreen(container) {
               <span>All (${membersWithLocation.length})</span>
             </button>
 
-            <button class="map-filter-chip shrink-0 flex items-center gap-1.5 h-8 px-space-md rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-md text-label-md shadow-sm" data-filter="Nearby" type="button">
-              <span class="material-symbols-outlined text-[15px] text-primary-container">near_me</span>
-              <span>Nearby</span>
+            <button class="map-filter-chip shrink-0 flex items-center gap-1.5 h-8 px-space-md rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-md text-label-md shadow-sm" data-filter="Radar10" type="button">
+              <span class="material-symbols-outlined text-[15px] text-primary-container">radar</span>
+              <span>10 km</span>
+            </button>
+            <button class="map-filter-chip shrink-0 flex items-center gap-1.5 h-8 px-space-md rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-md text-label-md shadow-sm" data-filter="Radar50" type="button">
+              <span class="material-symbols-outlined text-[15px] text-primary-container">radar</span>
+              <span>50 km</span>
+            </button>
+            <button class="map-filter-chip shrink-0 flex items-center gap-1.5 h-8 px-space-md rounded-full bg-surface-container-lowest/90 backdrop-blur-md text-on-surface font-label-md text-label-md shadow-sm" data-filter="Radar1000" type="button">
+              <span class="material-symbols-outlined text-[15px] text-primary-container">radar</span>
+              <span>1000 km</span>
             </button>
           </div>
         </div>
@@ -307,35 +341,12 @@ function setupMapEvents(allMembers, membersWithLocation, userLocation) {
     chip.className = chip.className.replace('bg-surface-container-lowest/90 text-on-surface', 'bg-primary-container text-on-primary');
 
     let filtered = membersWithLocation;
-    if (filter === 'Nearby') {
-      if (!userLocation) {
-        try {
-          userLocation = await LocationService.getCurrentPosition({ timeout: 5000 });
-          if (userLocation && map) {
-            if (userMarker) userMarker.setLatLng([userLocation.latitude, userLocation.longitude]);
-            else {
-              const userIcon = L.divIcon({
-                className: 'current-location-marker',
-                html: '<div class="current-location-dot"></div>',
-                iconSize: [16, 16],
-                iconAnchor: [8, 8],
-              });
-              userMarker = L.marker([userLocation.latitude, userLocation.longitude], { icon: userIcon }).addTo(map);
-            }
-          }
-        } catch (err) {
-          const { showSnackbar } = await import('../components/snackbar.js');
-          showSnackbar('Location access required for Nearby filter.', 'error');
-          // Revert chip to All
-          document.querySelector('[data-filter="All"]')?.click();
-          return;
-        }
-      }
-
+    if (filter.startsWith('Radar')) {
+      const radius = parseInt(filter.replace('Radar', ''));
       if (userLocation) {
         filtered = membersWithLocation.filter(m => {
           const d = calculateDistanceToMember(userLocation.latitude, userLocation.longitude, m.latitude, m.longitude);
-          return d != null && d <= 15;
+          return d != null && d <= radius;
         });
       }
     } else if (filter !== 'All') {
@@ -347,7 +358,7 @@ function setupMapEvents(allMembers, membersWithLocation, userLocation) {
     addFamilyMarkers(filtered, userLocation);
     if (filtered.length > 0) {
       const bounds = filtered.map(m => [m.latitude, m.longitude]);
-      if (userLocation && filter === 'Nearby') bounds.push([userLocation.latitude, userLocation.longitude]);
+      if (userLocation && filter.startsWith('Radar')) bounds.push([userLocation.latitude, userLocation.longitude]);
       map?.fitBounds(bounds, { padding: [60, 60], maxZoom: 12 });
     }
   });
