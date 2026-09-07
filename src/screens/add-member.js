@@ -57,20 +57,7 @@ function renderAddMemberHTML(memberCount) {
           </div>
         </div>
 
-        <!-- Photo Upload -->
-        <div class="flex flex-col items-center justify-center my-space-md">
-          <input type="file" accept="image/*" class="hidden" id="photo-input">
-          <div class="relative group cursor-pointer" id="photo-upload-area" onclick="document.getElementById('photo-input').click()">
-            <div class="w-24 h-24 rounded-full bg-surface-container flex flex-col items-center justify-center shadow-sm relative overflow-hidden transition-all duration-300 group-hover:bg-surface-variant" id="photo-preview-container">
-              <svg class="absolute inset-0 w-full h-full pointer-events-none stroke-outline-variant" fill="none" viewBox="0 0 96 96">
-                <circle cx="48" cy="48" r="46" stroke-dasharray="6 6" stroke-linecap="round" stroke-width="2"></circle>
-              </svg>
-              <span class="material-symbols-outlined text-outline text-[32px] mb-1" id="photo-icon">person_add</span>
-              <span class="font-label-sm text-[10px] text-on-surface-variant text-center px-2 leading-tight" id="photo-text">Add Photo</span>
-            </div>
-          </div>
-          <span class="font-label-sm text-label-sm text-outline mt-2">Optional portrait or avatar</span>
-        </div>
+
 
         <!-- Personal Info Form -->
         <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm space-y-space-md">
@@ -105,13 +92,7 @@ function renderAddMemberHTML(memberCount) {
             </div>
           </div>
 
-          <div class="space-y-1">
-            <label class="block font-label-md text-label-md text-on-surface-variant mb-1.5" for="whatsapp-link">WhatsApp Link (Auto-generated)</label>
-            <div class="relative flex items-center">
-              <span class="material-symbols-outlined absolute left-3.5 text-tertiary text-[20px]">chat</span>
-              <input class="w-full h-12 pl-11 pr-4 bg-surface-container-lowest border border-outline-variant/30 rounded-xl font-body-md text-body-md text-on-surface-variant focus:outline-none transition-colors truncate pointer-events-none" id="whatsapp-link" placeholder="https://wa.me/..." type="text" readonly tabindex="-1">
-            </div>
-          </div>
+
 
           <div>
             <label class="block font-label-md text-label-md text-on-surface mb-1.5" for="email">Email Address</label>
@@ -285,20 +266,13 @@ function renderAddMemberHTML(memberCount) {
 }
 
 function setupAddMemberEvents(container) {
-  // Phone number input formatting and WhatsApp link generation
+  // Phone number input formatting
   const phoneInput = document.getElementById('phone');
-  const whatsappInput = document.getElementById('whatsapp-link');
   
   phoneInput?.addEventListener('input', (e) => {
     let val = e.target.value.replace(/\D/g, '');
     if (val.length > 10) val = val.slice(0, 10);
     e.target.value = val;
-    
-    if (val.length >= 10 && whatsappInput) {
-      whatsappInput.value = `https://wa.me/91${val}`;
-    } else if (whatsappInput) {
-      whatsappInput.value = '';
-    }
   });
 
   // Photo Upload Preview
@@ -595,7 +569,7 @@ function updateLocationPreview() {
 
   const sourceLabel = locationData.location_source === 'GPS' ? `GPS Verified (Accuracy: ±${locationData.location_accuracy || '?'}m)` :
     locationData.location_source === 'MAP_SELECTION' ? 'Selected on Map' :
-    locationData.location_source === 'SEARCH' ? 'Found via Search' : 'Manual Entry';
+      locationData.location_source === 'SEARCH' ? 'Found via Search' : 'Manual Entry';
   document.getElementById('preview-source').textContent = sourceLabel;
 
   // Mini map
@@ -621,40 +595,22 @@ async function saveMember() {
   const name = document.getElementById('full-name')?.value?.trim();
   const description = document.getElementById('description')?.value;
   const phone = document.getElementById('phone')?.value?.trim();
-  const whatsapp_link = document.getElementById('whatsapp-link')?.value?.trim() || '';
   const email = document.getElementById('email')?.value?.trim();
 
   if (!name) { showSnackbar('Please enter a name.', 'error'); return; }
 
   const saveBtn = document.getElementById('save-member-btn');
   if (saveBtn) {
-    saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Saving...</span>';
+    saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Saving member...</span>';
     saveBtn.disabled = true;
   }
 
   try {
-    // Upload image if provided
-    if (profileImageFile) {
-      if (saveBtn) {
-        saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Uploading photo...</span>';
-      }
-      const fileExt = profileImageFile.name.split('.').pop();
-      const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-      const storageRef = ref(storage, `profile_pictures/${fileName}`);
-      
-      await uploadBytes(storageRef, profileImageFile);
-      profileImageUrl = await getDownloadURL(storageRef);
-    }
-
-    if (saveBtn) {
-      saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Saving member...</span>';
-    }
-
     const member = await FamilyRepository.add({
       name,
       description,
       phone_number: phone ? `+91${phone.replace(/\s/g, '')}` : '',
-      whatsapp_link,
+      whatsapp_link: phone && phone.replace(/\s/g, '').length >= 10 ? `https://wa.me/91${phone.replace(/\s/g, '').slice(-10)}` : '',
       email,
       address: locationData.location_name || '',
       location_name: locationData.location_name || '',

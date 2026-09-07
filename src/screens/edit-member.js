@@ -31,20 +31,7 @@ export default async function EditMemberScreen(container, params) {
       </div>
 
       <div class="flex flex-col px-screen-edge-padding space-y-space-lg">
-        <!-- Photo Upload -->
-        <div class="flex flex-col items-center justify-center mt-space-sm mb-space-xs">
-          <input type="file" accept="image/*" class="hidden" id="edit-photo-input">
-          <div class="relative group cursor-pointer" id="edit-photo-upload-area" onclick="document.getElementById('edit-photo-input').click()">
-            <div class="w-24 h-24 rounded-full bg-surface-container flex flex-col items-center justify-center shadow-sm relative overflow-hidden transition-all duration-300 group-hover:bg-surface-variant" id="edit-photo-preview-container">
-              ${currentImageUrl 
-                ? `<img src="${currentImageUrl}" class="w-full h-full object-cover">` 
-                : `<svg class="absolute inset-0 w-full h-full pointer-events-none stroke-outline-variant" fill="none" viewBox="0 0 96 96"><circle cx="48" cy="48" r="46" stroke-dasharray="6 6" stroke-linecap="round" stroke-width="2"></circle></svg><span class="material-symbols-outlined text-outline text-[32px] mb-1">person</span><span class="font-label-sm text-[10px] text-on-surface-variant text-center px-2 leading-tight">Change</span>`}
-            </div>
-            <div class="absolute bottom-0 right-0 w-8 h-8 bg-primary-container rounded-full flex items-center justify-center shadow-sm border-2 border-surface">
-              <span class="material-symbols-outlined text-on-primary-container text-[16px]">edit</span>
-            </div>
-          </div>
-        </div>
+
 
         <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm space-y-space-md">
           <div>
@@ -76,13 +63,7 @@ export default async function EditMemberScreen(container, params) {
             </div>
           </div>
 
-          <div class="space-y-1">
-            <label class="block font-label-md text-label-md text-on-surface-variant mb-1.5" for="edit-whatsapp-link">WhatsApp Link (Auto-generated)</label>
-            <div class="relative flex items-center">
-              <span class="material-symbols-outlined absolute left-3.5 text-tertiary text-[20px]">chat</span>
-              <input class="w-full h-12 pl-11 pr-4 bg-surface-container-lowest border border-outline-variant/30 rounded-xl font-body-md text-body-md text-on-surface-variant focus:outline-none transition-colors truncate pointer-events-none" id="edit-whatsapp-link" placeholder="https://wa.me/..." type="text" readonly tabindex="-1" value="${member.whatsapp_link || ''}">
-            </div>
-          </div>
+
 
           <div>
             <label class="block font-label-md text-label-md text-on-surface mb-1.5" for="edit-email">Email</label>
@@ -118,20 +99,13 @@ export default async function EditMemberScreen(container, params) {
     }
   });
 
-  // Phone number input formatting and WhatsApp link generation
+  // Phone number input formatting
   const phoneInput = document.getElementById('edit-phone');
-  const whatsappInput = document.getElementById('edit-whatsapp-link');
   
   phoneInput?.addEventListener('input', (e) => {
     let val = e.target.value.replace(/\D/g, '');
     if (val.length > 10) val = val.slice(0, 10);
     e.target.value = val;
-    
-    if (val.length >= 10 && whatsappInput) {
-      whatsappInput.value = `https://wa.me/91${val}`;
-    } else if (whatsappInput) {
-      whatsappInput.value = '';
-    }
   });
 
   document.getElementById('edit-save-btn')?.addEventListener('click', async () => {
@@ -143,35 +117,27 @@ export default async function EditMemberScreen(container, params) {
       name,
       description: document.getElementById('edit-description')?.value,
       phone_number: phone ? `+91${phone.replace(/\s/g, '')}` : '',
-      whatsapp_link: document.getElementById('edit-whatsapp-link')?.value || '',
+      whatsapp_link: phone && phone.replace(/\s/g, '').length >= 10 ? `https://wa.me/91${phone.replace(/\s/g, '').slice(-10)}` : '',
       email: document.getElementById('edit-email')?.value?.trim() || '',
     };
 
-    const btn = document.getElementById('edit-save-btn');
-    btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Saving...</span>';
-    btn.disabled = true;
+    const saveBtn = document.getElementById('edit-save-btn');
+    if (saveBtn) {
+      saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Saving...</span>';
+      saveBtn.disabled = true;
+    }
 
     try {
-      if (profileImageFile) {
-        btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Uploading photo...</span>';
-        const fileExt = profileImageFile.name.split('.').pop();
-        const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-        const storageRef = ref(storage, `profile_pictures/${fileName}`);
-        
-        await uploadBytes(storageRef, profileImageFile);
-        const url = await getDownloadURL(storageRef);
-        updates.profile_image = url;
-      }
-
-      btn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Updating record...</span>';
       await FamilyRepository.update(member.id, updates);
       showSnackbar('Member updated!', 'success');
       setTimeout(() => { window.location.hash = `/profile/${member.id}`; }, 600);
     } catch (err) {
       console.error(err);
       showSnackbar('Failed to save changes.', 'error');
-      btn.innerHTML = '<span class="material-symbols-outlined text-[22px]">check_circle</span>Save Changes';
-      btn.disabled = false;
+      if (saveBtn) {
+        saveBtn.innerHTML = '<span class="material-symbols-outlined text-[22px]">check_circle</span>Save Changes';
+        saveBtn.disabled = false;
+      }
     }
   });
 }
