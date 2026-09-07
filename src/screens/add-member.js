@@ -7,7 +7,7 @@ import { isValidLatitude, isValidLongitude, debounce, compressImage } from '../u
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { storage } from '../firebase.js';
-import { storage } from '../firebase.js';
+
 
 let locationData = {
   latitude: null,
