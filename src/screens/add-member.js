@@ -3,11 +3,11 @@ import { showSnackbar } from '../components/snackbar.js';
 import FamilyRepository from '../db/repository.js';
 import LocationService from '../services/location.js';
 import { reverseGeocode, searchLocation } from '../services/geocoding.js';
-import { isValidLatitude, isValidLongitude, debounce } from '../utils/helpers.js';
+import { isValidLatitude, isValidLongitude, debounce, compressImage } from '../utils/helpers.js';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { storage } from '../firebase.js';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { storage } from '../firebase.js';
 
 let locationData = {
   latitude: null,
@@ -55,6 +55,21 @@ function renderAddMemberHTML(memberCount) {
           <div class="w-11 h-11 flex items-center justify-center">
             <span class="material-symbols-outlined text-primary text-[22px]" style="font-variation-settings: 'FILL' 1;">family_restroom</span>
           </div>
+        </div>
+
+        <!-- Photo Upload -->
+        <div class="flex flex-col items-center justify-center my-space-md">
+          <input type="file" accept="image/*" class="hidden" id="photo-input">
+          <div class="relative group cursor-pointer" id="photo-upload-area" onclick="document.getElementById('photo-input').click()">
+            <div class="w-24 h-24 rounded-full bg-surface-container flex flex-col items-center justify-center shadow-sm relative overflow-hidden transition-all duration-300 group-hover:bg-surface-variant" id="photo-preview-container">
+              <svg class="absolute inset-0 w-full h-full pointer-events-none stroke-outline-variant" fill="none" viewBox="0 0 96 96">
+                <circle cx="48" cy="48" r="46" stroke-dasharray="6 6" stroke-linecap="round" stroke-width="2"></circle>
+              </svg>
+              <span class="material-symbols-outlined text-outline text-[32px] mb-1" id="photo-icon">person_add</span>
+              <span class="font-label-sm text-[10px] text-on-surface-variant text-center px-2 leading-tight" id="photo-text">Add Photo</span>
+            </div>
+          </div>
+          <span class="font-label-sm text-label-sm text-outline mt-2">Optional portrait or avatar</span>
         </div>
 
 
@@ -600,12 +615,21 @@ async function saveMember() {
   if (!name) { showSnackbar('Please enter a name.', 'error'); return; }
 
   const saveBtn = document.getElementById('save-member-btn');
-  if (saveBtn) {
-    saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Saving member...</span>';
-    saveBtn.disabled = true;
-  }
+    if (saveBtn) {
+      saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Saving member...</span>';
+      saveBtn.disabled = true;
+    }
 
-  try {
+    try {
+      if (profileImageFile) {
+        if (saveBtn) {
+          saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Processing photo...</span>';
+        }
+        profileImageUrl = await compressImage(profileImageFile, 300, 300, 0.7);
+        if (saveBtn) {
+          saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Saving member...</span>';
+        }
+      }
     const member = await FamilyRepository.add({
       name,
       description,

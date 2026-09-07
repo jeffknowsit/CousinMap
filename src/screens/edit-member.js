@@ -1,7 +1,7 @@
 import FamilyRepository from '../db/repository.js';
 import { showSnackbar } from '../components/snackbar.js';
 import { storage } from '../firebase.js';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { compressImage } from '../utils/helpers.js';
 
 export default async function EditMemberScreen(container, params) {
   const id = params.id;
@@ -31,6 +31,20 @@ export default async function EditMemberScreen(container, params) {
       </div>
 
       <div class="flex flex-col px-screen-edge-padding space-y-space-lg">
+        <!-- Photo Upload -->
+        <div class="flex flex-col items-center justify-center mt-space-sm mb-space-xs">
+          <input type="file" accept="image/*" class="hidden" id="edit-photo-input">
+          <div class="relative group cursor-pointer" id="edit-photo-upload-area" onclick="document.getElementById('edit-photo-input').click()">
+            <div class="w-24 h-24 rounded-full bg-surface-container flex flex-col items-center justify-center shadow-sm relative overflow-hidden transition-all duration-300 group-hover:bg-surface-variant" id="edit-photo-preview-container">
+              ${currentImageUrl
+      ? `<img src="${currentImageUrl}" class="w-full h-full object-cover">`
+      : `<svg class="absolute inset-0 w-full h-full pointer-events-none stroke-outline-variant" fill="none" viewBox="0 0 96 96"><circle cx="48" cy="48" r="46" stroke-dasharray="6 6" stroke-linecap="round" stroke-width="2"></circle></svg><span class="material-symbols-outlined text-outline text-[32px] mb-1">person</span><span class="font-label-sm text-[10px] text-on-surface-variant text-center px-2 leading-tight">Change</span>`}
+            </div>
+            <div class="absolute bottom-0 right-0 w-8 h-8 bg-primary-container rounded-full flex items-center justify-center shadow-sm border-2 border-surface">
+              <span class="material-symbols-outlined text-on-primary-container text-[16px]">edit</span>
+            </div>
+          </div>
+        </div>
 
 
         <div class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm space-y-space-md">
@@ -128,6 +142,15 @@ export default async function EditMemberScreen(container, params) {
     }
 
     try {
+      if (profileImageFile) {
+        if (saveBtn) {
+          saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Processing photo...</span>';
+        }
+        updates.profile_image = await compressImage(profileImageFile, 300, 300, 0.7);
+        if (saveBtn) {
+          saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Saving...</span>';
+        }
+      }
       await FamilyRepository.update(member.id, updates);
       showSnackbar('Member updated!', 'success');
       setTimeout(() => { window.location.hash = `/profile/${member.id}`; }, 600);
