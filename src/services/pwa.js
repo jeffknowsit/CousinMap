@@ -13,8 +13,18 @@ export function initPWA() {
 }
 
 function showInstallPromotion() {
+  // Check if we already showed it to avoid burdening the user
+  if (localStorage.getItem('pwaPromptShown')) return;
+
+  // Only show on home screen
+  const hash = window.location.hash;
+  if (hash !== '' && hash !== '#/' && hash !== '#/home') return;
+
   // Check if we already have a prompt UI
   if (document.getElementById('pwa-install-banner')) return;
+
+  // Mark as shown
+  localStorage.setItem('pwaPromptShown', 'true');
 
   const banner = document.createElement('div');
   banner.id = 'pwa-install-banner';
