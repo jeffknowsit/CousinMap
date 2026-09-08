@@ -36,7 +36,7 @@ export default async function MapScreen(container) {
         <p class="font-body-md text-body-md text-on-surface-variant mb-6 max-w-sm">
           To use the map and radar features, please allow location access in your browser settings.
         </p>
-        <button id="retry-location-btn" class="flex items-center gap-2 h-12 px-space-xl rounded-full bg-primary-container text-on-primary font-label-lg text-label-lg shadow-sm hover:brightness-105 active:scale-95 transition-all">
+        <button id="retry-location-btn" class="flex items-center gap-2 h-12 px-space-xl rounded-full bg-primary-container text-on-primary-container font-label-lg text-label-lg shadow-sm hover:brightness-105 active:scale-95 transition-all">
           <span class="material-symbols-outlined text-[20px]">refresh</span>
           <span>Try Again</span>
         </button>
@@ -69,7 +69,7 @@ export default async function MapScreen(container) {
             </button>
           </div>
           <div class="flex items-center gap-space-xs overflow-x-auto no-scrollbar py-0.5 -mx-screen-edge-padding px-screen-edge-padding" id="map-filters">
-            <button class="map-filter-chip shrink-0 flex items-center gap-1.5 h-8 px-space-md rounded-full bg-primary-container text-on-primary font-label-md text-label-md shadow-sm" data-filter="All" type="button">
+            <button class="map-filter-chip shrink-0 flex items-center gap-1.5 h-8 px-space-md rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md shadow-sm" data-filter="All" type="button">
               <span class="w-1.5 h-1.5 rounded-full bg-primary-fixed"></span>
               <span>All (${membersWithLocation.length})</span>
             </button>
@@ -249,7 +249,7 @@ function showMemberSheet(member, userLocation) {
       </div>
 
       <div class="grid grid-cols-12 gap-space-xs items-center">
-        <button class="col-span-8 flex items-center justify-center gap-2 h-12 px-space-md rounded-2xl bg-primary-container text-on-primary font-headline-md text-headline-md shadow hover:brightness-105 active:scale-[0.99] transition-all" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${member.latitude},${member.longitude}', '_blank')">
+        <button class="col-span-8 flex items-center justify-center gap-2 h-12 px-space-md rounded-2xl bg-primary-container text-on-primary-container font-headline-md text-headline-md shadow hover:brightness-105 active:scale-[0.99] transition-all" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${member.latitude},${member.longitude}', '_blank')">
           <span class="material-symbols-outlined text-[20px]">turn_right</span>
           <span>Directions</span>
         </button>
@@ -319,16 +319,40 @@ function setupMapEvents(allMembers, membersWithLocation, userLocation) {
 
   searchInput?.addEventListener('input', debounce((e) => {
     const q = e.target.value.toLowerCase().trim();
+    
+    // Clear radar circle on manual search
+    if (radarCircle) {
+      radarCircle.remove();
+      radarCircle = null;
+    }
+
     if (!q) {
       addFamilyMarkers(membersWithLocation, userLocation);
+      // Restore default view
+      if (membersWithLocation.length > 0) {
+        const bounds = membersWithLocation.map(m => [m.latitude, m.longitude]);
+        if (userLocation) bounds.push([userLocation.latitude, userLocation.longitude]);
+        map?.fitBounds(bounds, { padding: [60, 60], maxZoom: 12 });
+      }
       return;
     }
+
     const filtered = membersWithLocation.filter(m =>
       m.name.toLowerCase().includes(q) ||
       (m.location_name || '').toLowerCase().includes(q) ||
+      (m.address || '').toLowerCase().includes(q) ||
       (m.description || '').toLowerCase().includes(q)
     );
+
     addFamilyMarkers(filtered, userLocation);
+
+    // Auto-zoom to results
+    if (filtered.length > 0) {
+      const bounds = filtered.map(m => [m.latitude, m.longitude]);
+      map?.fitBounds(bounds, { padding: [80, 80], maxZoom: 14 });
+    } else if (userLocation) {
+      map?.setView([userLocation.latitude, userLocation.longitude], 12);
+    }
   }, 300));
 
   // Filter chips
@@ -341,9 +365,9 @@ function setupMapEvents(allMembers, membersWithLocation, userLocation) {
 
     // Update chip styles
     document.querySelectorAll('.map-filter-chip').forEach(c => {
-      c.className = c.className.replace('bg-primary-container text-on-primary', 'bg-surface-container-lowest/90 text-on-surface');
+      c.className = c.className.replace('bg-primary-container text-on-primary-container', 'bg-surface-container-lowest/90 text-on-surface');
     });
-    chip.className = chip.className.replace('bg-surface-container-lowest/90 text-on-surface', 'bg-primary-container text-on-primary');
+    chip.className = chip.className.replace('bg-surface-container-lowest/90 text-on-surface', 'bg-primary-container text-on-primary-container');
 
     let filtered = membersWithLocation;
     

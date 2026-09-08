@@ -49,21 +49,21 @@ export default async function HomeScreen(container) {
         <div class="w-full bg-surface-container-lowest rounded-2xl shadow-sm p-space-md">
           <div class="grid grid-cols-3 divide-x-0 gap-space-xs">
             <div class="flex flex-col items-center text-center p-space-xs rounded-xl bg-surface-container-low transition-transform active:scale-95">
-              <div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary mb-1">
+              <div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed-variant mb-1">
                 <span class="material-symbols-outlined text-[18px]">group</span>
               </div>
               <span class="font-headline-lg text-headline-lg text-on-surface">${memberCount}</span>
               <span class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Family Members</span>
             </div>
             <div class="flex flex-col items-center text-center p-space-xs rounded-xl bg-surface-container-low transition-transform active:scale-95">
-              <div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary mb-1">
+              <div class="w-8 h-8 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed-variant mb-1">
                 <span class="material-symbols-outlined text-[18px]">pin_drop</span>
               </div>
               <span class="font-headline-lg text-headline-lg text-on-surface">${locationsCount}</span>
               <span class="font-label-sm text-label-sm text-on-surface-variant leading-tight">Locations Added</span>
             </div>
             <div class="flex flex-col items-center text-center p-space-xs rounded-xl bg-surface-container-low relative transition-transform active:scale-95">
-              <div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-primary mb-1 relative">
+              <div class="w-8 h-8 rounded-full bg-primary-fixed flex items-center justify-center text-on-primary-fixed-variant mb-1 relative">
                 <span class="material-symbols-outlined text-[18px]">bolt</span>
                 ${updatedToday > 0 ? '<span class="absolute top-0 right-0 w-2 h-2 rounded-full bg-primary-container ring-2 ring-surface-container-lowest"></span>' : ''}
               </div>
@@ -78,7 +78,7 @@ export default async function HomeScreen(container) {
 
         <!-- Primary Action Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-space-sm">
-          <button class="flex items-center justify-between w-full h-[52px] px-space-md rounded-2xl bg-primary-container text-on-primary shadow-md active:scale-[0.98] transition-all" type="button" onclick="window.location.hash='/map'">
+          <button class="flex items-center justify-between w-full h-[52px] px-space-md rounded-2xl bg-primary-container text-on-primary-container shadow-md active:scale-[0.98] transition-all" type="button" onclick="window.location.hash='/map'">
             <div class="flex items-center gap-space-xs">
               <div class="w-8 h-8 rounded-full bg-on-primary/10 flex items-center justify-center">
                 <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">explore</span>
@@ -143,7 +143,7 @@ export default async function HomeScreen(container) {
           radarContainer.innerHTML = `
             <div class="w-full bg-surface-container-high rounded-2xl p-space-md shadow-sm relative overflow-hidden mb-space-sm">
               <div class="flex items-start gap-space-sm">
-                <div class="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-sm">
+                <div class="w-10 h-10 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-sm">
                   <span class="material-symbols-outlined text-[22px]">radar</span>
                 </div>
                 <div class="flex-1 min-w-0">

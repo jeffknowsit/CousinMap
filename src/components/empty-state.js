@@ -45,6 +45,18 @@ export function renderEmptyState(type = 'no-members') {
       subtitle: 'Could not determine your current location. Please check your GPS settings.',
       action: null,
     },
+    'no-dates': {
+      icon: 'calendar_month',
+      title: 'No Family Dates Yet',
+      subtitle: 'Add birthdays and wedding anniversaries to your family members to see them on the calendar.',
+      action: { label: '+ Add Family Member', hash: '/add' },
+    },
+    'no-month-events': {
+      icon: 'event_busy',
+      title: 'No Celebrations This Month',
+      subtitle: 'No family celebrations this month.',
+      action: null,
+    },
   };
 
   const state = states[type] || states['no-members'];
@@ -57,7 +69,7 @@ export function renderEmptyState(type = 'no-members') {
       <h3 class="font-headline-md text-headline-md text-on-surface mb-space-2xs">${state.title}</h3>
       <p class="font-body-md text-body-md text-on-surface-variant max-w-[280px]">${state.subtitle}</p>
       ${state.action ? `
-        <button class="mt-space-lg px-space-xl h-12 rounded-2xl bg-primary-container text-on-primary font-label-lg text-label-lg font-semibold shadow-md active:scale-[0.98] transition-all" onclick="window.location.hash='${state.action.hash}'">
+        <button class="mt-space-lg px-space-xl h-12 rounded-2xl bg-primary-container text-on-primary-container font-label-lg text-label-lg font-semibold shadow-md active:scale-[0.98] transition-all" onclick="window.location.hash='${state.action.hash}'">
           ${state.action.label}
         </button>
       ` : ''}

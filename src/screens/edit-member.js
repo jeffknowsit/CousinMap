@@ -86,6 +86,22 @@ export default async function EditMemberScreen(container, params) {
               <input class="w-full h-12 pl-11 pr-4 bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container" id="edit-email" value="${member.email || ''}" type="email">
             </div>
           </div>
+
+          <div>
+            <label class="block font-label-md text-label-md text-on-surface mb-1.5" for="edit-dob">Date of Birth</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-outline text-[20px]">cake</span>
+              <input class="w-full h-12 pl-11 pr-4 bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container" id="edit-dob" value="${member.dob || ''}" type="date">
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-label-md text-label-md text-on-surface mb-1.5" for="edit-wedding-anniversary">Wedding Anniversary</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-outline text-[20px]">celebration</span>
+              <input class="w-full h-12 pl-11 pr-4 bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary-container" id="edit-wedding-anniversary" value="${member.wedding_anniversary || ''}" type="date">
+            </div>
+          </div>
         </div>
 
         <button class="w-full h-14 rounded-2xl bg-gradient-to-r from-primary to-primary-container text-on-primary font-headline-md text-headline-md shadow-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all" id="edit-save-btn" type="button">
@@ -133,6 +149,8 @@ export default async function EditMemberScreen(container, params) {
       phone_number: phone ? `+91${phone.replace(/\s/g, '')}` : '',
       whatsapp_link: phone && phone.replace(/\s/g, '').length >= 10 ? `https://wa.me/91${phone.replace(/\s/g, '').slice(-10)}` : '',
       email: document.getElementById('edit-email')?.value?.trim() || '',
+      dob: document.getElementById('edit-dob')?.value || null,
+      wedding_anniversary: document.getElementById('edit-wedding-anniversary')?.value || null,
     };
 
     const saveBtn = document.getElementById('edit-save-btn');

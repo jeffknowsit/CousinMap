@@ -10,7 +10,7 @@ export function showSnackbar(message, type = 'info', duration = 3000) {
   hideSnackbar();
 
   const colors = {
-    success: 'bg-primary-container text-on-primary',
+    success: 'bg-primary-container text-on-primary-container',
     error: 'bg-error text-on-error',
     info: 'bg-inverse-surface text-inverse-on-surface',
   };

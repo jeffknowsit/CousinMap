@@ -116,6 +116,22 @@ function renderAddMemberHTML(memberCount) {
               <input class="w-full h-12 pl-11 pr-4 bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container transition-colors" id="email" placeholder="jeff.joseph@example.com" type="email">
             </div>
           </div>
+
+          <div>
+            <label class="block font-label-md text-label-md text-on-surface mb-1.5" for="dob">Date of Birth</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-outline text-[20px]">cake</span>
+              <input class="w-full h-12 pl-11 pr-4 bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container transition-colors" id="dob" type="date">
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-label-md text-label-md text-on-surface mb-1.5" for="wedding-anniversary">Wedding Anniversary</label>
+            <div class="relative flex items-center">
+              <span class="material-symbols-outlined absolute left-3.5 text-outline text-[20px]">celebration</span>
+              <input class="w-full h-12 pl-11 pr-4 bg-surface-container-low rounded-xl font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary-container transition-colors" id="wedding-anniversary" type="date">
+            </div>
+          </div>
         </div>
 
         <!-- Location Section -->
@@ -135,13 +151,13 @@ function renderAddMemberHTML(memberCount) {
           <div class="space-y-space-sm pt-space-xs">
             <!-- Use Phone Location -->
             <button class="w-full text-left p-space-md rounded-xl bg-primary-fixed/25 hover:bg-primary-fixed/40 transition-all flex items-start gap-space-sm active:scale-[0.99] relative overflow-hidden" id="btn-phone-gps" type="button">
-              <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0 shadow-sm mt-0.5">
+              <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-sm mt-0.5">
                 <span class="material-symbols-outlined text-[22px]">my_location</span>
               </div>
               <div class="flex-1 min-w-0 pr-2">
                 <div class="flex items-center gap-2">
                   <span class="font-label-lg text-label-lg text-on-surface">Use Phone Location</span>
-                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-label-sm font-semibold bg-primary-container text-on-primary">Most Accurate</span>
+                  <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-label-sm font-semibold bg-primary-container text-on-primary-container">Most Accurate</span>
                 </div>
                 <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Auto-fetch live coordinates from this device</p>
               </div>
@@ -260,7 +276,7 @@ function renderAddMemberHTML(memberCount) {
         <div class="absolute bottom-0 left-0 right-0 z-[1001] p-space-md pb-[max(env(safe-area-inset-bottom,0px),1rem)]">
           <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-xl">
             <p class="font-body-sm text-body-sm text-on-surface-variant mb-2" id="picker-coords">Move the map to select a location</p>
-            <button class="w-full h-12 rounded-2xl bg-primary-container text-on-primary font-label-lg text-label-lg font-semibold shadow-md active:scale-[0.98] transition-all" id="confirm-map-pick" type="button">
+            <button class="w-full h-12 rounded-2xl bg-primary-container text-on-primary-container font-label-lg text-label-lg font-semibold shadow-md active:scale-[0.98] transition-all" id="confirm-map-pick" type="button">
               <span class="material-symbols-outlined text-[18px] align-middle mr-1">check</span>
               Confirm This Location
             </button>
@@ -417,7 +433,7 @@ async function getGPSLocation() {
           <span class="text-on-surface font-semibold">${pos.accuracy} m</span>
         </div>
       </div>
-      <button class="w-full h-12 rounded-2xl bg-primary-container text-on-primary font-label-lg text-label-lg font-semibold shadow-md active:scale-[0.98] transition-all" id="use-gps-location">
+      <button class="w-full h-12 rounded-2xl bg-primary-container text-on-primary-container font-label-lg text-label-lg font-semibold shadow-md active:scale-[0.98] transition-all" id="use-gps-location">
         <span class="material-symbols-outlined text-[18px] align-middle mr-1">check</span>
         Use This Location
       </button>
@@ -611,6 +627,8 @@ async function saveMember() {
   const description = document.getElementById('description')?.value;
   const phone = document.getElementById('phone')?.value?.trim();
   const email = document.getElementById('email')?.value?.trim();
+  const dob = document.getElementById('dob')?.value;
+  const wedding_anniversary = document.getElementById('wedding-anniversary')?.value;
 
   if (!name) { showSnackbar('Please enter a name.', 'error'); return; }
 
@@ -647,20 +665,22 @@ async function saveMember() {
           saveBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[22px]">progress_activity</span><span>Saving member...</span>';
         }
       }
-    const member = await FamilyRepository.add({
-      name,
-      description,
-      phone_number: phone ? `+91${phone.replace(/\s/g, '')}` : '',
-      whatsapp_link: phone && phone.replace(/\s/g, '').length >= 10 ? `https://wa.me/91${phone.replace(/\s/g, '').slice(-10)}` : '',
-      email,
-      address: locationData.location_name || '',
-      location_name: locationData.location_name || '',
-      latitude: locationData.latitude,
-      longitude: locationData.longitude,
-      location_accuracy: locationData.location_accuracy,
-      location_source: locationData.location_source,
-      profile_image: profileImageUrl,
-    });
+      const member = await FamilyRepository.add({
+        name,
+        description,
+        phone_number: phone ? `+91${phone.replace(/\s/g, '')}` : '',
+        whatsapp_link: phone && phone.replace(/\s/g, '').length >= 10 ? `https://wa.me/91${phone.replace(/\s/g, '').slice(-10)}` : '',
+        email,
+        dob,
+        wedding_anniversary,
+        address: locationData.location_name || '',
+        location_name: locationData.location_name || '',
+        latitude: locationData.latitude,
+        longitude: locationData.longitude,
+        location_accuracy: locationData.location_accuracy,
+        location_source: locationData.location_source,
+        profile_image: profileImageUrl,
+      });
 
     if (saveBtn) {
       saveBtn.innerHTML = '<span class="material-symbols-outlined text-[22px]">done_all</span><span>Member Added!</span>';

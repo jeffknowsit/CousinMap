@@ -78,7 +78,7 @@ export default async function UpdateLocationScreen(container, params) {
           <h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Choose Method</h3>
 
           <button class="w-full text-left p-space-md rounded-xl bg-primary-fixed/25 hover:bg-primary-fixed/40 transition-all flex items-start gap-space-sm active:scale-[0.99]" id="ul-phone-gps" type="button">
-            <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+            <div class="w-10 h-10 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0">
               <span class="material-symbols-outlined text-[22px]">my_location</span>
             </div>
             <div class="flex-1">
@@ -119,7 +119,7 @@ export default async function UpdateLocationScreen(container, params) {
         </div>
 
         <!-- Save Button -->
-        <button class="w-full h-14 rounded-2xl bg-primary-container text-on-primary font-headline-md text-headline-md shadow-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-50" id="ul-save-btn" type="button" disabled>
+        <button class="w-full h-14 rounded-2xl bg-primary-container text-on-primary-container font-headline-md text-headline-md shadow-xl flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-50" id="ul-save-btn" type="button" disabled>
           <span class="material-symbols-outlined text-[22px]">check_circle</span>
           Update Location
         </button>
@@ -142,7 +142,7 @@ export default async function UpdateLocationScreen(container, params) {
         <div class="absolute bottom-0 left-0 right-0 z-[1001] p-space-md pb-[max(env(safe-area-inset-bottom,0px),1rem)]">
           <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-xl">
             <p class="font-body-sm text-body-sm text-on-surface-variant mb-2" id="ul-picker-coords">Move map to select</p>
-            <button class="w-full h-12 rounded-2xl bg-primary-container text-on-primary font-label-lg text-label-lg font-semibold shadow-md" id="ul-confirm-map">Confirm This Location</button>
+            <button class="w-full h-12 rounded-2xl bg-primary-container text-on-primary-container font-label-lg text-label-lg font-semibold shadow-md" id="ul-confirm-map">Confirm This Location</button>
           </div>
         </div>
       </div>

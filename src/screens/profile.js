@@ -109,6 +109,28 @@ export default async function ProfileScreen(container, params) {
               </button>
             </div>
           ` : ''}
+          ${member.dob ? `
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-space-sm">
+                <span class="material-symbols-outlined text-outline text-[20px]">cake</span>
+                <div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Date of Birth</p>
+                  <p class="font-body-md text-body-md text-on-surface">${new Date(member.dob).toLocaleDateString()}</p>
+                </div>
+              </div>
+            </div>
+          ` : ''}
+          ${member.wedding_anniversary ? `
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-space-sm">
+                <span class="material-symbols-outlined text-outline text-[20px]">celebration</span>
+                <div>
+                  <p class="font-body-sm text-body-sm text-on-surface-variant">Wedding Anniversary</p>
+                  <p class="font-body-md text-body-md text-on-surface">${new Date(member.wedding_anniversary).toLocaleDateString()}</p>
+                </div>
+              </div>
+            </div>
+          ` : ''}
         </div>
 
         <!-- Location Section -->
@@ -159,7 +181,7 @@ export default async function ProfileScreen(container, params) {
         <!-- Action Buttons -->
         <div class="space-y-space-xs pb-space-lg">
           ${hasLocation ? `
-            <button class="w-full h-14 rounded-2xl bg-primary-container text-on-primary font-headline-md text-headline-md shadow-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-all" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${member.latitude},${member.longitude}', '_blank')">
+            <button class="w-full h-14 rounded-2xl bg-primary-container text-on-primary-container font-headline-md text-headline-md shadow-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-all" onclick="window.open('https://www.google.com/maps/dir/?api=1&destination=${member.latitude},${member.longitude}', '_blank')">
               <span class="material-symbols-outlined text-[22px]">turn_right</span>
               Get Directions
             </button>

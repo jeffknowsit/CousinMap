@@ -13,6 +13,7 @@ import UpdateLocationScreen from './screens/update-location.js';
 import MoreScreen from './screens/more.js';
 import EditMemberScreen from './screens/edit-member.js';
 import UserProfileScreen from './screens/user-profile.js';
+import CalendarScreen from './screens/calendar.js';
 
 // Initialize the application
 async function init() {
@@ -20,6 +21,7 @@ async function init() {
   Router.register('/home', HomeScreen);
   Router.register('/map', MapScreen);
   Router.register('/family', FamilyScreen);
+  Router.register('/calendar', CalendarScreen);
   Router.register('/add', AddMemberScreen);
   Router.register('/profile/:id', ProfileScreen);
   Router.register('/update-location/:id', UpdateLocationScreen);

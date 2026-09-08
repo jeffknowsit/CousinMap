@@ -7,6 +7,7 @@ export function renderBottomNav(active = 'home', familyCount = 0) {
   const tabs = [
     { key: 'home', icon: 'home', label: 'Home', path: '/home' },
     { key: 'map', icon: 'explore', label: 'Map', path: '/map' },
+    { key: 'calendar', icon: 'calendar_month', label: 'Calendar', path: '/calendar' },
     { key: 'family', icon: 'group', label: 'Family', path: '/family', badge: familyCount },
     { key: 'more', icon: 'more_horiz', label: 'More', path: '/more' },
   ];
@@ -20,7 +21,7 @@ export function renderBottomNav(active = 'home', familyCount = 0) {
 
     let badgeHTML = '';
     if (tab.badge && tab.badge > 0) {
-      const badgeBg = isActive ? 'bg-primary-container text-on-primary' : 'bg-surface-container-high text-on-surface-variant';
+      const badgeBg = isActive ? 'bg-primary-container text-on-primary-container' : 'bg-surface-container-high text-on-surface-variant';
       badgeHTML = `<span class="absolute -top-1 -right-2.5 px-1 py-0.5 min-w-[16px] text-center font-label-sm text-[10px] rounded-full ${badgeBg} font-semibold">${tab.badge}</span>`;
     }
 

@@ -38,6 +38,8 @@ const FamilyRepository = {
       phone_number: member.phone_number || '',
       whatsapp_link: member.whatsapp_link || '',
       email: member.email || '',
+      dob: member.dob || null,
+      wedding_anniversary: member.wedding_anniversary || null,
       address: member.address || '',
       location_name: member.location_name || '',
       latitude: member.latitude ?? null,
