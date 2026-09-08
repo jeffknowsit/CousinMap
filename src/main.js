@@ -2,6 +2,10 @@ import './styles/main.css';
 import Router from './router.js';
 import FamilyRepository from './db/repository.js';
 import './services/theme.js';
+import { registerSW } from 'virtual:pwa-register';
+
+// Register service worker
+registerSW({ immediate: true });
 
 // Import screens
 import HomeScreen from './screens/home.js';
@@ -15,8 +19,11 @@ import EditMemberScreen from './screens/edit-member.js';
 import UserProfileScreen from './screens/user-profile.js';
 import CalendarScreen from './screens/calendar.js';
 
+import { initPWA } from './services/pwa.js';
+
 // Initialize the application
 async function init() {
+  initPWA();
   // Register routes
   Router.register('/home', HomeScreen);
   Router.register('/map', MapScreen);
