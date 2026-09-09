@@ -3,9 +3,9 @@ import LocationService from '../services/location.js';
 import { formatDistance, calculateDistanceToMember } from '../services/distance.js';
 import { avatarHTML, formatDateTime, formatLocationSource, getSourceIcon } from '../utils/helpers.js';
 import { showBottomSheet } from '../components/bottom-sheet.js';
-import { promptPin } from '../components/pin-modal.js';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { requirePin } from '../components/pin-modal.js';
 
 let miniMap = null;
 
@@ -187,25 +187,20 @@ export default async function ProfileScreen(container, params) {
               Get Directions
             </button>
           ` : ''}
-          <button class="w-full h-12 rounded-2xl bg-surface-container-lowest text-on-surface font-label-lg text-label-lg shadow-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all border border-outline-variant/30" onclick="window.location.hash='/update-location/${member.id}'">
+          <button class="w-full h-12 rounded-2xl bg-surface-container-lowest text-on-surface font-label-lg text-label-lg shadow-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all border border-outline-variant/30" id="profile-edit-location-btn">
             <span class="material-symbols-outlined text-[20px] text-primary">edit_location_alt</span>
             Edit Location
+            <span class="material-symbols-outlined text-[14px] text-outline ml-auto mr-1" title="PIN required">lock</span>
           </button>
-          <button id="main-edit-member-btn" class="w-full h-12 rounded-2xl bg-surface-container-lowest text-on-surface font-label-lg text-label-lg shadow-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all border border-outline-variant/30">
+          <button class="w-full h-12 rounded-2xl bg-surface-container-lowest text-on-surface font-label-lg text-label-lg shadow-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all border border-outline-variant/30" id="profile-edit-member-btn">
             <span class="material-symbols-outlined text-[20px] text-secondary">edit</span>
             Edit Member
+            <span class="material-symbols-outlined text-[14px] text-outline ml-auto mr-1" title="PIN required">lock</span>
           </button>
         </div>
       </div>
     </main>
   `;
-
-  // Main Edit Member button
-  document.getElementById('main-edit-member-btn')?.addEventListener('click', () => {
-    promptPin(() => {
-      window.location.hash = `/edit/${member.id}`;
-    }, 'Enter your security PIN to authorize editing this member.');
-  });
 
   // Init mini map
   if (hasLocation) {
@@ -226,45 +221,69 @@ export default async function ProfileScreen(container, params) {
     }, 100);
   }
 
+  // Add listeners for edit/delete buttons in the main view
+  document.getElementById('profile-edit-location-btn')?.addEventListener('click', async () => {
+    if (await requirePin('Enter PIN to edit location.')) {
+      window.location.hash = '/update-location/' + member.id;
+    }
+  });
+
+  document.getElementById('profile-edit-member-btn')?.addEventListener('click', async () => {
+    if (await requirePin('Enter PIN to edit member.')) {
+      window.location.hash = '/edit/' + member.id;
+    }
+  });
+
   // More menu
   document.getElementById('profile-more-btn')?.addEventListener('click', () => {
-    showBottomSheet(`
-      <div class="space-y-1 py-space-xs">
-        <button class="w-full flex items-center gap-space-sm px-space-md py-space-sm rounded-xl hover:bg-surface-container-low transition-colors" id="bs-edit-member-btn">
-          <span class="material-symbols-outlined text-[20px] text-on-surface-variant">edit</span>
-          <span class="font-body-md text-body-md text-on-surface">Edit Member</span>
-        </button>
-        <button class="w-full flex items-center gap-space-sm px-space-md py-space-sm rounded-xl hover:bg-surface-container-low transition-colors" onclick="window.location.hash='/update-location/${member.id}'">
-          <span class="material-symbols-outlined text-[20px] text-on-surface-variant">edit_location_alt</span>
-          <span class="font-body-md text-body-md text-on-surface">Update Location</span>
-        </button>
-        <button class="w-full flex items-center gap-space-sm px-space-md py-space-sm rounded-xl hover:bg-error-container/50 transition-colors" id="delete-member-btn">
-          <span class="material-symbols-outlined text-[20px] text-error">delete</span>
-          <span class="font-body-md text-body-md text-error">Delete Member</span>
-        </button>
-      </div>
-    `);
+    showBottomSheet(
+      '<div class="space-y-1 py-space-xs">' +
+        '<button class="w-full flex items-center gap-space-sm px-space-md py-space-sm rounded-xl hover:bg-surface-container-low transition-colors" id="bs-edit-member-btn">' +
+          '<span class="material-symbols-outlined text-[20px] text-on-surface-variant">edit</span>' +
+          '<span class="font-body-md text-body-md text-on-surface flex-1 text-left">Edit Member</span>' +
+          '<span class="material-symbols-outlined text-[16px] text-outline" title="PIN required">lock</span>' +
+        '</button>' +
+        '<button class="w-full flex items-center gap-space-sm px-space-md py-space-sm rounded-xl hover:bg-surface-container-low transition-colors" id="bs-update-location-btn">' +
+          '<span class="material-symbols-outlined text-[20px] text-on-surface-variant">edit_location_alt</span>' +
+          '<span class="font-body-md text-body-md text-on-surface flex-1 text-left">Update Location</span>' +
+          '<span class="material-symbols-outlined text-[16px] text-outline" title="PIN required">lock</span>' +
+        '</button>' +
+        '<button class="w-full flex items-center gap-space-sm px-space-md py-space-sm rounded-xl hover:bg-error-container/50 transition-colors" id="delete-member-btn">' +
+          '<span class="material-symbols-outlined text-[20px] text-error">delete</span>' +
+          '<span class="font-body-md text-body-md text-error flex-1 text-left">Delete Member</span>' +
+          '<span class="material-symbols-outlined text-[16px] text-error/60" title="PIN required">lock</span>' +
+        '</button>' +
+      '</div>'
+    );
 
     setTimeout(() => {
-      document.getElementById('bs-edit-member-btn')?.addEventListener('click', () => {
-        import('../components/bottom-sheet.js').then(m => m.hideBottomSheet());
-        promptPin(() => {
-          window.location.hash = `/edit/${member.id}`;
-        }, 'Enter your security PIN to authorize editing this member.');
+      document.getElementById('bs-edit-member-btn')?.addEventListener('click', async () => {
+        const { hideBottomSheet } = await import('../components/bottom-sheet.js');
+        hideBottomSheet();
+        if (await requirePin('Enter PIN to edit member.')) {
+          window.location.hash = '/edit/' + member.id;
+        }
+      });
+
+      document.getElementById('bs-update-location-btn')?.addEventListener('click', async () => {
+        const { hideBottomSheet } = await import('../components/bottom-sheet.js');
+        hideBottomSheet();
+        if (await requirePin('Enter PIN to edit location.')) {
+          window.location.hash = '/update-location/' + member.id;
+        }
       });
 
       document.getElementById('delete-member-btn')?.addEventListener('click', async () => {
         const { hideBottomSheet } = await import('../components/bottom-sheet.js');
         hideBottomSheet();
-        
-        promptPin(async () => {
-          if (confirm(`Are you sure you want to delete ${member.name}?`)) {
+        if (await requirePin('Enter PIN to delete member.')) {
+          if (confirm('Are you sure you want to delete ' + member.name + '?')) {
             await FamilyRepository.delete(member.id);
             const { showSnackbar } = await import('../components/snackbar.js');
-            showSnackbar(`${member.name} deleted.`, 'info');
+            showSnackbar(member.name + ' deleted.', 'info');
             window.location.hash = '/family';
           }
-        }, 'Enter your security PIN to authorize deleting this member.');
+        }
       });
     }, 100);
   });
