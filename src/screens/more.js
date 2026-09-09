@@ -3,6 +3,8 @@ import { renderBottomNav } from '../components/bottom-nav.js';
 import FamilyRepository from '../db/repository.js';
 import { showSnackbar } from '../components/snackbar.js';
 import themeService from '../services/theme.js';
+import { promptPin } from '../components/pin-modal.js';
+import { installPWA } from '../services/pwa.js';
 
 export default async function MoreScreen(container) {
   const memberCount = await FamilyRepository.getCount();
@@ -23,6 +25,7 @@ export default async function MoreScreen(container) {
           subtitle: themeService.isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode', 
           id: 'toggle-theme' 
         },
+        { icon: 'app_shortcut', label: 'Install App', subtitle: 'Add to Home Screen', action: () => { installPWA(); } },
         { icon: 'info', label: 'About', subtitle: 'CousinMap v1.0.0', action: () => { showSnackbar('Developed by Jeff Joseph<br><a href="https://github.com/jeffknowsit/" target="_blank" class="font-bold underline mt-1 block">github.com/jeffknowsit/</a>', 'info', 6000); } },
       ],
     },
@@ -95,28 +98,7 @@ export default async function MoreScreen(container) {
       </div>
     </main>
     ${renderBottomNav('more', memberCount)}
-
-    <!-- PIN Modal -->
-    <div id="pin-modal" class="fixed inset-0 bg-on-background/40 z-[100] hidden flex items-center justify-center px-4 backdrop-blur-sm transition-opacity opacity-0">
-      <div class="bg-surface-container-lowest rounded-3xl p-6 w-full max-w-sm shadow-lg transform transition-transform scale-95 translate-y-4">
-        <div class="flex flex-col items-center text-center">
-          <div class="w-12 h-12 rounded-full bg-error-container text-error flex items-center justify-center mb-4">
-            <span class="material-symbols-outlined text-[24px]">lock</span>
-          </div>
-          <h3 class="font-headline-md text-headline-md text-on-surface mb-2">Security PIN Required</h3>
-          <p class="font-body-sm text-body-sm text-on-surface-variant mb-6">Enter your security PIN to authorize clearing all data.</p>
-          
-          <input type="password" id="pin-input" class="w-full text-center text-2xl tracking-[0.5em] font-mono bg-surface-container-low border-2 border-outline-variant rounded-xl px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary mb-2 transition-all" placeholder="••••••" maxlength="6">
-          <p id="pin-error" class="font-label-sm text-label-sm text-error h-4 opacity-0 transition-opacity">Incorrect PIN</p>
-          
-          <div class="flex gap-3 w-full mt-6">
-            <button id="cancel-pin" class="flex-1 py-2.5 rounded-full font-label-lg font-semibold text-on-surface-variant bg-surface-container-low hover:bg-surface-container active:scale-95 transition-all">Cancel</button>
-            <button id="confirm-pin" class="flex-1 py-2.5 rounded-full font-label-lg font-semibold text-on-error bg-error hover:opacity-90 active:scale-95 transition-all">Confirm</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
+  \`;
 
   // Wire up generic actions
   const allItems = sections.flatMap(s => s.items);
@@ -140,45 +122,11 @@ export default async function MoreScreen(container) {
     });
   }
 
-  // Clear all data logic with PIN modal
+  // Clear all data logic with shared PIN modal
   const clearBtn = document.getElementById('btn-clear-data');
-  const modal = document.getElementById('pin-modal');
-  const cancelBtn = document.getElementById('cancel-pin');
-  const confirmBtn = document.getElementById('confirm-pin');
-  const pinInput = document.getElementById('pin-input');
-  const pinError = document.getElementById('pin-error');
-  const modalInner = modal.querySelector('div');
-
-  const showModal = () => {
-    modal.classList.remove('hidden');
-    // small delay for transition
-    setTimeout(() => {
-      modal.classList.remove('opacity-0');
-      modalInner.classList.remove('scale-95', 'translate-y-4');
-      pinInput.value = '';
-      pinInput.focus();
-      pinError.classList.add('opacity-0');
-    }, 10);
-  };
-
-  const hideModal = () => {
-    modal.classList.add('opacity-0');
-    modalInner.classList.add('scale-95', 'translate-y-4');
-    setTimeout(() => {
-      modal.classList.add('hidden');
-    }, 200); // match transition duration
-  };
-
-  clearBtn?.addEventListener('click', showModal);
-  cancelBtn?.addEventListener('click', hideModal);
-
-  confirmBtn?.addEventListener('click', async () => {
-    const enteredPin = pinInput.value;
-    if (enteredPin === '981106') {
-      // Valid PIN
-      hideModal();
-      confirmBtn.innerHTML = '<span class="material-symbols-outlined animate-spin text-[18px]">progress_activity</span>';
-      
+  
+  clearBtn?.addEventListener('click', () => {
+    promptPin(async () => {
       try {
         const members = await FamilyRepository.getAll();
         for (const m of members) {
@@ -189,19 +137,6 @@ export default async function MoreScreen(container) {
       } catch (err) {
         showSnackbar('Error clearing data.', 'error');
       }
-    } else {
-      // Invalid PIN
-      pinError.classList.remove('opacity-0');
-      pinInput.classList.add('border-error');
-      pinInput.value = '';
-      setTimeout(() => pinInput.classList.remove('border-error'), 1500);
-    }
-  });
-
-  // Allow pressing Enter to confirm PIN
-  pinInput?.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      confirmBtn.click();
-    }
+    }, 'Enter your security PIN to authorize clearing all data.');
   });
 }

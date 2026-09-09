@@ -3,6 +3,7 @@ import LocationService from '../services/location.js';
 import { formatDistance, calculateDistanceToMember } from '../services/distance.js';
 import { avatarHTML, formatDateTime, formatLocationSource, getSourceIcon } from '../utils/helpers.js';
 import { showBottomSheet } from '../components/bottom-sheet.js';
+import { promptPin } from '../components/pin-modal.js';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
@@ -190,7 +191,7 @@ export default async function ProfileScreen(container, params) {
             <span class="material-symbols-outlined text-[20px] text-primary">edit_location_alt</span>
             Edit Location
           </button>
-          <button class="w-full h-12 rounded-2xl bg-surface-container-lowest text-on-surface font-label-lg text-label-lg shadow-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all border border-outline-variant/30" onclick="window.location.hash='/edit/${member.id}'">
+          <button id="main-edit-member-btn" class="w-full h-12 rounded-2xl bg-surface-container-lowest text-on-surface font-label-lg text-label-lg shadow-sm flex items-center justify-center gap-2 active:scale-[0.98] transition-all border border-outline-variant/30">
             <span class="material-symbols-outlined text-[20px] text-secondary">edit</span>
             Edit Member
           </button>
@@ -198,6 +199,13 @@ export default async function ProfileScreen(container, params) {
       </div>
     </main>
   `;
+
+  // Main Edit Member button
+  document.getElementById('main-edit-member-btn')?.addEventListener('click', () => {
+    promptPin(() => {
+      window.location.hash = `/edit/${member.id}`;
+    }, 'Enter your security PIN to authorize editing this member.');
+  });
 
   // Init mini map
   if (hasLocation) {
@@ -222,7 +230,7 @@ export default async function ProfileScreen(container, params) {
   document.getElementById('profile-more-btn')?.addEventListener('click', () => {
     showBottomSheet(`
       <div class="space-y-1 py-space-xs">
-        <button class="w-full flex items-center gap-space-sm px-space-md py-space-sm rounded-xl hover:bg-surface-container-low transition-colors" onclick="window.location.hash='/edit/${member.id}'">
+        <button class="w-full flex items-center gap-space-sm px-space-md py-space-sm rounded-xl hover:bg-surface-container-low transition-colors" id="bs-edit-member-btn">
           <span class="material-symbols-outlined text-[20px] text-on-surface-variant">edit</span>
           <span class="font-body-md text-body-md text-on-surface">Edit Member</span>
         </button>
@@ -238,15 +246,25 @@ export default async function ProfileScreen(container, params) {
     `);
 
     setTimeout(() => {
+      document.getElementById('bs-edit-member-btn')?.addEventListener('click', () => {
+        import('../components/bottom-sheet.js').then(m => m.hideBottomSheet());
+        promptPin(() => {
+          window.location.hash = `/edit/${member.id}`;
+        }, 'Enter your security PIN to authorize editing this member.');
+      });
+
       document.getElementById('delete-member-btn')?.addEventListener('click', async () => {
-        if (confirm(`Are you sure you want to delete ${member.name}?`)) {
-          await FamilyRepository.delete(member.id);
-          const { hideBottomSheet } = await import('../components/bottom-sheet.js');
-          hideBottomSheet();
-          const { showSnackbar } = await import('../components/snackbar.js');
-          showSnackbar(`${member.name} deleted.`, 'info');
-          window.location.hash = '/family';
-        }
+        const { hideBottomSheet } = await import('../components/bottom-sheet.js');
+        hideBottomSheet();
+        
+        promptPin(async () => {
+          if (confirm(`Are you sure you want to delete ${member.name}?`)) {
+            await FamilyRepository.delete(member.id);
+            const { showSnackbar } = await import('../components/snackbar.js');
+            showSnackbar(`${member.name} deleted.`, 'info');
+            window.location.hash = '/family';
+          }
+        }, 'Enter your security PIN to authorize deleting this member.');
       });
     }, 100);
   });
