@@ -1,0 +1,259 @@
+<!DOCTYPE html><html class="h-full" lang="en" style=""><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Plus+Jakarta+Sans:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "background": "#faf8ff", "inverse-primary": "#80d5cb", "tertiary-fixed": "#ffddb8", "error-container": "#ffdad6", "secondary-fixed": "#dbe1ff", "surface-dim": "#d2d9f4", "on-background": "#131b2e", "inverse-surface": "#283044", "secondary": "#0051d5", "surface-container-lowest": "#ffffff", "outline-variant": "#bdc9c6", "on-tertiary-fixed-variant": "#653e00", "tertiary-container": "#945d00", "inverse-on-surface": "#eef0ff", "on-primary": "#ffffff", "surface-variant": "#dae2fd", "on-error-container": "#93000a", "tertiary": "#734700", "on-surface-variant": "#3e4947", "primary-fixed": "#9cf2e8", "on-tertiary": "#ffffff", "outline": "#6e7977", "surface-bright": "#faf8ff", "secondary-fixed-dim": "#b4c5ff", "primary": "#005c55", "on-primary-fixed-variant": "#00504a", "surface-container": "#eaedff", "on-primary-fixed": "#00201d", "surface-tint": "#006a63", "surface-container-highest": "#dae2fd", "on-primary-container": "#a3faef", "error": "#ba1a1a", "on-secondary-fixed-variant": "#003ea8", "on-secondary-fixed": "#00174b", "on-tertiary-container": "#ffe6cc", "surface-container-low": "#f2f3ff", "on-secondary": "#ffffff", "on-secondary-container": "#fefcff", "on-error": "#ffffff", "surface-container-high": "#e2e7ff", "tertiary-fixed-dim": "#ffb95f", "on-tertiary-fixed": "#2a1700", "surface": "#faf8ff", "primary-fixed-dim": "#80d5cb", "on-surface": "#131b2e", "primary-container": "#0f766e", "secondary-container": "#316bf3" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "space-sm": "0.75rem", "space-2xs": "0.25rem", "screen-edge-padding": "1rem", "space-3xl": "2.5rem", "touch-target-min": "3rem", "space-xl": "1.5rem", "space-xs": "0.5rem", "space-lg": "1.25rem", "space-2xl": "2rem" }, "fontFamily": { "headline-xl-mobile": [ "Plus Jakarta Sans" ], "body-md": [ "Inter" ], "headline-md": [ "Plus Jakarta Sans" ], "body-sm": [ "Inter" ], "body-lg": [ "Inter" ], "label-md": [ "Inter" ], "headline-lg": [ "Plus Jakarta Sans" ], "label-lg": [ "Inter" ], "label-sm": [ "Inter" ], "headline-xl": [ "Plus Jakarta Sans" ] }, "fontSize": { "headline-xl-mobile": [ "26px", { "lineHeight": "34px", "fontWeight": "700" } ], "body-md": [ "14px", { "lineHeight": "20px", "fontWeight": "400" } ], "headline-md": [ "18px", { "lineHeight": "24px", "fontWeight": "600" } ], "body-sm": [ "13px", { "lineHeight": "18px", "fontWeight": "400" } ], "body-lg": [ "16px", { "lineHeight": "24px", "fontWeight": "400" } ], "label-md": [ "12px", { "lineHeight": "16px", "fontWeight": "600" } ], "headline-lg": [ "22px", { "lineHeight": "28px", "fontWeight": "600" } ], "label-lg": [ "14px", { "lineHeight": "18px", "fontWeight": "600" } ], "label-sm": [ "11px", { "lineHeight": "14px", "fontWeight": "500" } ], "headline-xl": [ "32px", { "lineHeight": "40px", "fontWeight": "700" } ] } } } };</script><style>@layer base { html, body { min-height: 100%; margin: 0; padding: 0; } .pb-safe { padding-bottom: max(env(safe-area-inset-bottom, 0px), 0.75rem); } .pt-safe { padding-top: max(env(safe-area-inset-top, 0px), 0.5rem); } } ::-webkit-scrollbar { display: none; }
+@keyframes radar-ping-slow {
+  0% { transform: scale(0.85); opacity: 0.8; }
+  70% { transform: scale(1.45); opacity: 0; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-radar-ring-1 {
+  animation: radar-ping-slow 4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.animate-radar-ring-2 {
+  animation: radar-ping-slow 4s cubic-bezier(0, 0, 0.2, 1) infinite 2s;
+}
+.animate-radar-beam {
+  animation: radar-sweep 8s linear infinite;
+}
+</style></head><body class="bg-surface text-on-surface font-body-md text-body-md flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]"><div class="h-16 px-screen-edge-padding flex items-center justify-between"><div class="flex items-center gap-space-xs"><img alt="CousinMap Logo" class="h-8 w-auto object-contain rounded-md" src="https://lh3.googleusercontent.com/aida/AEtjO1V6DPpBmj9A8TtoFWss11huvXOIbcPtOvxfY2f59_LajLZ3pEu9xnCVjzBe4eTGW1VShNgTJvXclTPV-UuOOAq9l7AJyQf4RrI45UHivIG_pKRt6YI3FqTKRK4R2MNH1DrYyWrtW7Xh94GxBD9F6CHe3nYcZs4v9vMVYICmEG_qR4sRgs-jTjgLRmMz6Z__nYzyI7tyxpX2JtHqi0Oq_7O1g9A5-6nA2eP7OrTkO04H4hWu81LZDmM_"><span class="font-headline-md text-headline-md tracking-tight text-on-surface">CousinMap</span></div><div class="flex items-center gap-space-xs"><button class="flex items-center justify-center p-space-2xs min-w-touch-target-min min-h-touch-target-min rounded-full hover:bg-surface-container transition-colors" type="button"><img alt="Maya Profile" class="w-9 h-9 rounded-full object-cover ring-2 ring-primary/20 shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1X1ZjQem_MFFH6JLSudXhKVdzjYtMOrQ5B0ENKp5HXnOHv73ZckY1FdGoePUMcpxrTgIfvwA_K3DWTj_PCPBt0Z31eqVEK4JPhVxeAp5ZoRoxytH1_3dCMCLrKv745tMfwUL73juoLEQGOS1tmVvPaijHsZhzFEi3YO1uZCbCAaHRR0NmTF-jpz7agRXuUb3SsprJhz55DNfUaXCJZNL5lB0W5Mvxgxm3h7yo7_uTWQ_xl8GNFzsNWJAQ"></button></div></div></header><main class="flex-1 flex flex-col relative w-full pt-16 pb-28 bg-surface"><div class="flex flex-col w-full px-screen-edge-padding space-y-space-lg">
+<!-- Welcome Title Section -->
+<div class="flex flex-col mt-space-sm">
+<div class="flex items-center justify-between">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-primary-fixed/70 text-on-primary-fixed-variant">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm font-semibold tracking-wide uppercase">Live Compass</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline">Updated just now</span>
+</div>
+<h1 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface mt-2 tracking-tight">Good Morning</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">Everyone you love is on the map.</p>
+</div>
+<!-- VARIANT 2: DYNAMIC RADAR COMPASS HERO ENTRANCE -->
+<div class="relative w-full rounded-3xl overflow-hidden bg-gradient-to-b from-primary-container via-[#0d6b63] to-[#084c47] p-5 text-on-primary shadow-xl shadow-primary-container/15">
+<!-- Topographic Subtle Contours & Compass Coordinates Overlay -->
+<div class="absolute inset-0 opacity-15 pointer-events-none">
+<svg class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+<circle cx="50%" cy="50%" fill="none" r="40" stroke="#a3faef" stroke-dasharray="3 4" stroke-width="1"></circle>
+<circle cx="50%" cy="50%" fill="none" r="80" stroke="#a3faef" stroke-dasharray="4 6" stroke-width="1"></circle>
+<circle cx="50%" cy="50%" fill="none" r="120" stroke="#a3faef" stroke-opacity="0.5" stroke-width="1"></circle>
+<line stroke="#a3faef" stroke-opacity="0.3" stroke-width="0.8" x1="50%" x2="50%" y1="10%" y2="90%"></line>
+<line stroke="#a3faef" stroke-opacity="0.3" stroke-width="0.8" x1="10%" x2="90%" y1="50%" y2="50%"></line>
+</svg>
+</div>
+<div class="relative z-10 flex flex-col items-center">
+<!-- Radar Wave Canvas Container -->
+<div class="relative w-56 h-56 flex items-center justify-center my-1">
+<!-- Outer expanding pulse waves -->
+<div class="absolute w-44 h-44 rounded-full border border-primary-fixed/40 animate-radar-ring-1 pointer-events-none"></div>
+<div class="absolute w-44 h-44 rounded-full border border-primary-fixed/30 animate-radar-ring-2 pointer-events-none"></div>
+<!-- Concentric Radar Rings -->
+<div class="absolute w-52 h-52 rounded-full border border-white/10 flex items-center justify-center">
+<span class="absolute top-1 font-label-sm text-[10px] text-primary-fixed/70 tracking-widest uppercase">N</span>
+<span class="absolute bottom-1 font-label-sm text-[10px] text-primary-fixed/70 tracking-widest uppercase">S</span>
+<span class="absolute left-2 font-label-sm text-[10px] text-primary-fixed/70 tracking-widest uppercase">W</span>
+<span class="absolute right-2 font-label-sm text-[10px] text-primary-fixed/70 tracking-widest uppercase">E</span>
+</div>
+<div class="absolute w-36 h-36 rounded-full border border-primary-fixed/20 bg-primary/15 backdrop-blur-[1px]"></div>
+<div class="absolute w-20 h-20 rounded-full border border-primary-fixed/40 bg-primary/30"></div>
+<!-- Rotating soft sweeping beam -->
+<div class="absolute inset-0 rounded-full animate-radar-beam pointer-events-none flex items-center justify-center">
+<div class="w-28 h-28 bg-gradient-to-tr from-transparent via-primary-fixed/10 to-primary-fixed/30 rounded-full origin-bottom-right transform -rotate-45" style="clip-path: polygon(50% 50%, 100% 0, 100% 50%);"></div>
+</div>
+<!-- Center Node: Maya (Current User) -->
+<div class="relative z-20 flex flex-col items-center">
+<div class="w-12 h-12 rounded-full ring-3 ring-on-primary shadow-lg overflow-hidden bg-primary-container">
+<img alt="Maya" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1X1ZjQem_MFFH6JLSudXhKVdzjYtMOrQ5B0ENKp5HXnOHv73ZckY1FdGoePUMcpxrTgIfvwA_K3DWTj_PCPBt0Z31eqVEK4JPhVxeAp5ZoRoxytH1_3dCMCLrKv745tMfwUL73juoLEQGOS1tmVvPaijHsZhzFEi3YO1uZCbCAaHRR0NmTF-jpz7agRXuUb3SsprJhz55DNfUaXCJZNL5lB0W5Mvxgxm3h7yo7_uTWQ_xl8GNFzsNWJAQ">
+</div>
+<div class="absolute -bottom-2 px-2 py-0.2 rounded-full bg-surface-container-lowest/90 backdrop-blur-sm text-primary font-label-sm text-[10px] font-bold shadow">
+          You
+        </div>
+</div>
+<!-- Floating Radar Beacon 1: Jeff Joseph (North-East, 2.4 km) -->
+<div class="absolute top-6 right-8 z-20 flex flex-col items-center cursor-pointer group active:scale-95 transition-transform">
+<div class="relative">
+<img alt="Jeff Joseph" class="w-9 h-9 rounded-full object-cover ring-2 ring-primary-fixed shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWzQV-kH-pqG-GG2BTSkMZs0kDDFd80K3uRW1WpGct1NpIgWoyx9GYiS3cZvd50u2P3KKh4HsTTHsG6OOT2WJ3SnD-ehSNkScUoyKS_VPgubj0FMOmyqBC_E5qt_1khi4i7UP-r-PL_LXXR8CDBxb3gP8AnXi9p4n-kfsffmWAyu3QdCB3cYejaz1o0uTOEPfF5V2IJu0OYWZjDEyPMR6iqT1POJqqoxZf-tsENqf3rKKpptDaQsM">
+<span class="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-primary-fixed ring-2 ring-primary-container flex items-center justify-center">
+<span class="w-1 h-1 rounded-full bg-primary"></span>
+</span>
+</div>
+<span class="mt-1 px-1.5 py-0.5 rounded-md bg-black/40 backdrop-blur-md font-label-sm text-[10px] text-on-primary font-medium tracking-tight">Jeff • 2.4 km</span>
+</div>
+<!-- Floating Radar Beacon 2: Priya Menon (South-East, 4.1 km) -->
+<div class="absolute bottom-6 right-6 z-20 flex flex-col items-center cursor-pointer group active:scale-95 transition-transform">
+<div class="relative">
+<img alt="Priya Menon" class="w-9 h-9 rounded-full object-cover ring-2 ring-primary-fixed shadow-md" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD03dxOSkyuV4LaZEPboT1UiXiCvFD5Ha1tFYslrcnXU_jBkoB0_cC9zBcdRBi8ht99JxFtPl8wmF3TDNrr9p6yLW53rxJ0yypFm47JTu4WAMhjSxP0vVftennQtK44dqxiWKt9p8rvXQ-D9NBqCzgoeLjSnYBpfBBkK1XWs977F6MA_d5deGaBkv6LEb5knNRmn4RAyFmuKRJPIiuqsU0BVbwZiZxWkhegonD4o26GduJurhXqheo">
+<span class="absolute -top-0.5 -right-0.5 w-3 h-3 rounded-full bg-primary-fixed ring-2 ring-primary-container"></span>
+</div>
+<span class="mt-1 px-1.5 py-0.5 rounded-md bg-black/40 backdrop-blur-md font-label-sm text-[10px] text-on-primary font-medium tracking-tight">Priya • 4.1 km</span>
+</div>
+<!-- Floating Radar Beacon 3: David (West, 6.8 km) -->
+<div class="absolute top-16 left-3 z-20 flex flex-col items-center cursor-pointer group active:scale-95 transition-transform">
+<div class="relative">
+<img alt="David Kurian" class="w-8 h-8 rounded-full object-cover ring-2 ring-white/60 shadow-md opacity-90" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWlgTz36BEej1ca1uRBA8wtTeYHCe3dNeLBDx1qbSq1fXsEbe3WTz0yj0ASc-hUp_8DH5X8pBWosztkVwXTCBkvdPTGm7lAllYGcO9pVEUdItuoOCbLtpWuSFjgn28Le37HqfHeIG-YQVA0044hWaBzeYM4qP1OGX_Q2yveMVZGmZmF0j1XvZtyUMaCBoDLKls-OKVOWAhmDhNFg1tc_3iAz1Rmjx1bfFKnAUGF5Biyo1v7bWZ9oE">
+</div>
+<span class="mt-1 px-1.5 py-0.5 rounded-md bg-black/40 backdrop-blur-md font-label-sm text-[10px] text-on-primary font-medium tracking-tight">David • 6.8 km</span>
+</div>
+</div>
+<!-- Hero Compass Headline Pill -->
+<div class="flex items-center gap-2 mt-1 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15">
+<span class="material-symbols-outlined text-[16px] text-primary-fixed">radar</span>
+<span class="font-label-sm text-label-sm font-semibold text-primary-fixed">3 Cousins in 10 km</span>
+</div>
+</div>
+</div>
+<!-- FOCUSED METRICS: Clean Frosted Glass Bar -->
+<div class="w-full bg-surface-container-lowest/80 backdrop-blur-md rounded-2xl border border-outline-variant/30 shadow-sm p-space-sm">
+<div class="grid grid-cols-3 divide-x divide-outline-variant/30 text-center">
+<div class="flex flex-col items-center justify-center px-1">
+<span class="font-headline-md text-headline-md text-on-surface">24</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant">in Circle</span>
+</div>
+<div class="flex flex-col items-center justify-center px-1">
+<div class="flex items-center gap-1">
+<span class="font-headline-md text-headline-md text-primary">3</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-ping"></span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant font-medium text-primary">Nearby</span>
+</div>
+<div class="flex flex-col items-center justify-center px-1">
+<div class="flex items-center gap-1 text-primary">
+<span class="w-2 h-2 rounded-full bg-emerald-500 shadow-sm shadow-emerald-500/50 animate-pulse"></span>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Active</span>
+</div>
+<span class="font-label-sm text-[11px] text-on-surface-variant">Live GPS</span>
+</div>
+</div>
+</div>
+<!-- HIGH-IMPACT PRIMARY ACTION -->
+<div>
+<div class="flex items-center gap-3 w-full"><button class="flex-1 flex items-center justify-between px-5 py-3.5 rounded-full bg-[#0F766E] text-white shadow-md active:scale-[0.98] transition-all hover:bg-[#0d6861]" type="button"><div class="flex items-center gap-3"><div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center shrink-0"><svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"></path></svg></div><div class="flex flex-col text-left"><span class="font-bold text-[15px] leading-tight text-white">Explore Live Map</span><span class="text-[12px] text-teal-100 font-medium leading-tight mt-0.5">View real-time spatial pins</span></div></div><svg class="w-5 h-5 text-white shrink-0" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"></path></svg></button><button class="h-[54px] w-[54px] rounded-2xl bg-surface-container-lowest border border-slate-100 shadow-sm flex items-center justify-center text-[#0F766E] hover:bg-surface-container transition-all active:scale-95 shrink-0" title="Add Cousin" type="button"><svg class="w-6 h-6 text-[#0F766E]" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" x2="20" y1="8" y2="14"></line><line x1="23" x2="17" y1="11" y2="11"></line></svg></button></div>
+</div>
+<!-- BIRTHDAY CELEBRATION SECTION -->
+<div class="flex flex-col space-y-3">
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: &quot;FILL&quot; 1;">cake</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface tracking-tight">Today's&nbsp; Events</h2>
+</div>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200/70 text-amber-800 text-[11px] font-semibold shadow-xs">
+      🎉 2 Celebrating Today
+    </span>
+</div>
+<!-- Interactive Carousel Container -->
+<div class="relative -mx-screen-edge-padding px-screen-edge-padding">
+<div class="flex gap-3 overflow-x-auto no-scrollbar scroll-smooth snap-x snap-mandatory py-1">
+<!-- Card 1: Sneha Roy -->
+<div class="min-w-[85%] sm:min-w-[320px] max-w-[340px] snap-center bg-gradient-to-br from-surface-container-lowest via-surface-container-lowest to-amber-50/40 rounded-2xl p-4 border border-amber-200/60 shadow-md relative overflow-hidden flex flex-col justify-between shrink-0">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-amber-200/30 rounded-full blur-xl pointer-events-none"></div>
+<div>
+<div class="flex items-start gap-3">
+<div class="relative shrink-0">
+<div class="w-13 h-13 rounded-2xl p-0.5 bg-gradient-to-tr from-amber-400 via-rose-400 to-primary shadow-sm">
+<img alt="Sneha Roy" class="w-12 h-12 rounded-[14px] object-cover bg-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVcqAhMUVcSbMvd0Of_9Emtc3pfAwYc-ElVHqvqiT1ETqJ4tny_sV2N2N_fQXj9ncRF0KS-lA5EsG7doth7KYtw-cUnxzLjtANTDysBeoq5r61SzGiSDoQK_nUXGusJ1DiOosTJ_7vmHG9EXEEQKumLcIcmXglxLzgP51Hz-InWr8RRiis2sZF99eiqcRM-bjNX2GjP8V4Vn1KYspeYUBjVRl1xOTuavsPsx1fRv5lo7FeNdMYKe0">
+</div>
+<span class="absolute -bottom-1 -right-1 text-[15px] filter drop-shadow-sm leading-none select-none">🎂</span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center justify-between gap-1">
+<h3 class="font-headline-md text-[16px] text-on-surface truncate font-bold">Sneha Roy</h3>
+
+</div>
+<div class="flex items-center gap-1.5 text-amber-700 font-semibold text-[13px] mt-0.5">
+<span class="">Turning 24 Today!</span>
+<span class="text-xs">✨</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-[12px] mt-1">
+<span class="material-symbols-outlined text-[14px] text-primary">location_on</span>
+<span class="truncate">Kochi • 72 km away</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions Row -->
+<div class="mt-3.5 pt-3 border-t border-outline-variant/20 flex items-center gap-2">
+<a class="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-label-sm text-[12px] font-semibold shadow-sm shadow-emerald-600/20 active:scale-95 transition-all" href="https://wa.me/919876543210?text=Happy%2024th%20Birthday%20Sneha!%20🎉🎂%20Wishing%20you%20an%20amazing%20year%20ahead!">
+<svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path></svg>
+<span class="">Wish on WhatsApp</span>
+</a>
+<a class="w-9 h-9 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface flex items-center justify-center shrink-0 active:scale-90 transition-all border border-outline-variant/30" href="tel:+919876543210" title="Direct Call">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</a>
+</div>
+</div>
+<!-- Card 2: Kevin Joseph -->
+<div class="min-w-[85%] sm:min-w-[320px] max-w-[340px] snap-center bg-gradient-to-br from-surface-container-lowest via-surface-container-lowest to-primary-fixed/20 rounded-2xl p-4 border border-primary-fixed-dim/60 shadow-md relative overflow-hidden flex flex-col justify-between shrink-0">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-primary-fixed/30 rounded-full blur-xl pointer-events-none"></div>
+<div>
+<div class="flex items-start gap-3">
+<div class="relative shrink-0">
+<div class="w-13 h-13 rounded-2xl p-0.5 bg-gradient-to-tr from-teal-400 via-primary-fixed to-blue-500 shadow-sm">
+<img alt="Kevin Joseph" class="w-12 h-12 rounded-[14px] object-cover bg-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUzmkoJIEAmQfpG4NWYhynKnP1Tsw6nGWJx1q7OuNYS8WzVH2CZDtmN0JQb_qKj-9J72Fx-QYjK-vCEEwF6Y-9D4okLMNIGSKapIT87aels5nX_AVL022VNarI_YlRcyGt7bQ7Bl9kB17N279xJ08AIYaOBV7LxzOpRXYOfIsWOyaySuW2hJNo5AErNfFi3E2ddnlmL00hTKHP5kuChIqHe5PLX3cOWvCFJCySxuTXaaVTZvAzzZU">
+</div>
+<span class="absolute -bottom-1 -right-1 text-[15px] filter drop-shadow-sm leading-none select-none">🎉</span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center justify-between gap-1">
+<h3 class="font-headline-md text-[16px] text-on-surface truncate font-bold">Kevin Joseph</h3>
+<span class="px-2 py-0.5 rounded-full bg-primary-fixed/70 text-on-primary-fixed-variant font-label-sm text-[10px] font-bold uppercase tracking-wider shrink-0">Paternal</span>
+</div>
+<div class="flex items-center gap-1.5 text-primary-container font-semibold text-[13px] mt-0.5">
+<span class="">Turning 21 Today!</span>
+<span class="text-xs">🎈</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-[12px] mt-1">
+<span class="material-symbols-outlined text-[14px] text-primary">location_on</span>
+<span class="truncate">Thrissur • 12 km away</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions Row -->
+<div class="mt-3.5 pt-3 border-t border-outline-variant/20 flex items-center gap-2">
+<a class="flex-1 flex items-center justify-center gap-1.5 h-9 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-label-sm text-[12px] font-semibold shadow-sm shadow-emerald-600/20 active:scale-95 transition-all" href="https://wa.me/919876543211?text=Happy%2021st%20Birthday%20Kevin!%20🎉🎂%20Have%20a%20blast%20today!">
+<svg class="w-4 h-4 fill-current shrink-0" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"></path></svg>
+<span class="">Wish on WhatsApp</span>
+</a>
+<a class="w-9 h-9 rounded-xl bg-surface-container-high hover:bg-surface-container text-on-surface flex items-center justify-center shrink-0 active:scale-90 transition-all border border-outline-variant/30" href="tel:+919876543211" title="Direct Call">
+<span class="material-symbols-outlined text-[18px]">call</span>
+</a>
+</div>
+</div>
+</div>
+<!-- Carousel Slide Indicators -->
+<div class="flex items-center justify-center gap-1.5 mt-2">
+<span class="w-4 h-1.5 rounded-full bg-primary transition-all"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-outline-variant/60"></span>
+</div>
+</div>
+</div>
+<!-- STREAMLINED ESSENTIALS: Closest to You Spotlight (2 Refined Cards) -->
+<div class="flex flex-col space-y-3">
+<div class="flex items-center justify-between px-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">Closest to You</h2>
+<a class="font-label-md text-label-md text-primary font-semibold flex items-center gap-0.5 hover:underline" href="#">
+      View All
+      <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+<!-- Card 1: Jeff Joseph -->
+<div class="w-full bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex flex-col gap-3 active:bg-surface-container-low transition-all cursor-pointer"><div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3.5 min-w-0 flex-1"><div class="relative w-13 h-13 shrink-0"><img alt="Jeff Joseph" class="w-12 h-12 rounded-2xl object-cover shadow-sm ring-1 ring-outline-variant/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWzQV-kH-pqG-GG2BTSkMZs0kDDFd80K3uRW1WpGct1NpIgWoyx9GYiS3cZvd50u2P3KKh4HsTTHsG6OOT2WJ3SnD-ehSNkScUoyKS_VPgubj0FMOmyqBC_E5qt_1khi4i7UP-r-PL_LXXR8CDBxb3gP8AnXi9p4n-kfsffmWAyu3QdCB3cYejaz1o0uTOEPfF5V2IJu0OYWZjDEyPMR6iqT1POJqqoxZf-tsENqf3rKKpptDaQsM"><span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 ring-2 ring-surface-container-lowest flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span></span></div><div class="min-w-0 flex-1"><div class="flex items-center gap-2 flex-wrap"><h3 class="font-headline-md text-[16px] text-on-surface font-semibold">Jeff Joseph</h3><span class="px-2 py-0.5 rounded-full bg-primary-fixed/80 text-on-primary-fixed-variant font-label-sm text-[11px] font-semibold shrink-0">Cousin</span></div><div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-[13px] mt-1 flex-wrap"><span class="font-semibold text-primary">2.4 km away</span><span class="text-outline/50">•</span><span class="truncate">Thrissur, Kerala</span></div></div></div></div><div class="flex items-center gap-2 pt-2 border-t border-outline-variant/20"><button class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-[13px] font-semibold active:scale-95 transition-all" type="button"><span class="material-symbols-outlined text-[18px] text-on-surface-variant">person</span><span class="">Profile</span></button><a class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-primary hover:bg-[#0d6861] text-on-primary font-label-sm text-[13px] font-semibold active:scale-95 transition-all shadow-sm" href="tel:+919876543212"><span class="material-symbols-outlined text-[18px]">call</span><span class="">Call</span></a></div></div>
+<!-- Card 2: Priya Menon -->
+<div class="w-full bg-surface-container-lowest rounded-2xl p-4 shadow-sm border border-outline-variant/20 flex flex-col gap-3 active:bg-surface-container-low transition-all cursor-pointer"><div class="flex items-center justify-between gap-3"><div class="flex items-center gap-3.5 min-w-0 flex-1"><div class="relative w-13 h-13 shrink-0"><img alt="Priya Menon" class="w-12 h-12 rounded-2xl object-cover shadow-sm ring-1 ring-outline-variant/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD03dxOSkyuV4LaZEPboT1UiXiCvFD5Ha1tFYslrcnXU_jBkoB0_cC9zBcdRBi8ht99JxFtPl8wmF3TDNrr9p6yLW53rxJ0yypFm47JTu4WAMhjSxP0vVftennQtK44dqxiWKt9p8rvXQ-D9NBqCzgoeLjSnYBpfBBkK1XWs977F6MA_d5deGaBkv6LEb5knNRmn4RAyFmuKRJPIiuqsU0BVbwZiZxWkhegonD4o26GduJurhXqheo"><span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 ring-2 ring-surface-container-lowest flex items-center justify-center"><span class="w-1.5 h-1.5 rounded-full bg-white"></span></span></div><div class="min-w-0 flex-1"><div class="flex items-center gap-2 flex-wrap"><h3 class="font-headline-md text-[16px] text-on-surface font-semibold">Priya Menon</h3><span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface font-label-sm text-[11px] font-semibold shrink-0">Cousin</span></div><div class="flex items-center gap-1.5 text-on-surface-variant font-body-sm text-[13px] mt-1 flex-wrap"><span class="font-semibold text-primary">4.1 km away</span><span class="text-outline/50">•</span><span class="truncate">Calicut Road</span></div></div></div></div><div class="flex items-center gap-2 pt-2 border-t border-outline-variant/20"><button class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-surface-container hover:bg-surface-container-high text-on-surface font-label-sm text-[13px] font-semibold active:scale-95 transition-all" type="button"><span class="material-symbols-outlined text-[18px] text-on-surface-variant">person</span><span class="">Profile</span></button><a class="flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-primary hover:bg-[#0d6861] text-on-primary font-label-sm text-[13px] font-semibold active:scale-95 transition-all shadow-sm" href="tel:+919876543213"><span class="material-symbols-outlined text-[18px]">call</span><span class="">Call</span></a></div></div>
+</div>
+</div>
+<script>
+  // Simple micro-interaction for touch states and cards click feedback
+  document.querySelectorAll('.cursor-pointer').forEach(card => {
+    card.addEventListener('click', () => {
+      card.classList.add('scale-[0.99]');
+      setTimeout(() => card.classList.remove('scale-[0.99]'), 120);
+    });
+  });
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/85 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.04)]" data-active-classes="text-primary-container [&amp;_span.indicator]:scale-100 [&amp;_.nav-badge]:bg-primary-container [&amp;_.nav-badge]:text-on-primary"><div class="flex justify-around items-center h-16 px-screen-edge-padding"><a aria-current="page" class="flex flex-col items-center justify-center min-w-touch-target-min min-h-touch-target-min transition-all duration-200 group text-primary-container [&amp;_span.indicator]:scale-100 [&amp;_.nav-badge]:bg-primary-container [&amp;_.nav-badge]:text-on-primary" data-path="home" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">home</span><span class="indicator absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-primary-container scale-0 transition-transform duration-200"></span></div><span class="font-label-sm text-label-sm mt-0.5">Home</span></a><a class="flex flex-col items-center justify-center min-w-touch-target-min min-h-touch-target-min text-outline transition-all duration-200 group" data-path="map" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">explore</span><span class="indicator absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-primary-container scale-0 transition-transform duration-200"></span></div><span class="font-label-sm text-label-sm mt-0.5">Map</span></a><a class="flex flex-col items-center justify-center min-w-touch-target-min min-h-touch-target-min text-outline transition-all duration-200 group" data-path="calendar" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">calendar_month</span><span class="indicator absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-primary-container scale-0 transition-transform duration-200"></span></div><span class="font-label-sm text-label-sm mt-0.5">Calendar</span></a><a class="flex flex-col items-center justify-center min-w-touch-target-min min-h-touch-target-min text-outline transition-all duration-200 group" data-path="family" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">group</span><span class="nav-badge absolute -top-1 -right-2.5 px-1 py-0.2 min-w-[16px] text-center font-label-sm text-[10px] rounded-full bg-primary-container text-on-primary font-semibold">24</span><span class="indicator absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-primary-container scale-0 transition-transform duration-200"></span></div><span class="font-label-sm text-label-sm mt-0.5">Family</span></a><a class="flex flex-col items-center justify-center min-w-touch-target-min min-h-touch-target-min text-outline transition-all duration-200 group" data-path="more" href="#"><div class="relative flex items-center justify-center"><span class="material-symbols-outlined text-[24px]">more_horiz</span><span class="indicator absolute -bottom-1 w-1.5 h-1.5 rounded-full bg-primary-container scale-0 transition-transform duration-200"></span></div><span class="font-label-sm text-label-sm mt-0.5">More</span></a></div></nav>
+
+</body></html>

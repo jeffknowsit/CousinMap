@@ -365,3 +365,23 @@
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out;
 }
+
+/* Radar Animations */
+@keyframes radar-ping-slow {
+  0% { transform: scale(0.85); opacity: 0.8; }
+  70% { transform: scale(1.45); opacity: 0; }
+  100% { transform: scale(1.55); opacity: 0; }
+}
+@keyframes radar-sweep {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.animate-radar-ring-1 {
+  animation: radar-ping-slow 4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.animate-radar-ring-2 {
+  animation: radar-ping-slow 4s cubic-bezier(0, 0, 0.2, 1) infinite 2s;
+}
+.animate-radar-beam {
+  animation: radar-sweep 8s linear infinite;
+}

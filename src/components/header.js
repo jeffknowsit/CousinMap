@@ -6,9 +6,7 @@ export function renderHeader(activeTab = 'home') {
     <header class="fixed top-0 w-full z-50 pt-safe bg-surface/80 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)]">
       <div class="h-16 px-screen-edge-padding flex items-center justify-between">
         <div class="flex items-center gap-space-xs cursor-pointer" onclick="window.location.hash='/home'">
-          <div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center">
-            <span class="material-symbols-outlined text-on-primary-container text-[18px]">explore</span>
-          </div>
+          <img src="/logo.png" alt="CousinMap Logo" class="w-10 h-10 object-contain" />
           <span class="font-headline-md text-headline-md tracking-tight text-on-surface">CousinMap</span>
         </div>
         <div class="flex items-center gap-space-xs">

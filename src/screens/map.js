@@ -268,7 +268,7 @@ function showMemberSheet(member, userLocation) {
           <span class="material-symbols-outlined text-[18px] text-primary-container">mail</span>
           <span>Email</span>
         </button>
-        <button class="flex-1 flex items-center justify-center gap-1.5 h-10 rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors" onclick="navigator.share ? navigator.share({title: '${member.name}', text: '${member.name} Location', url: 'https://www.google.com/maps?q=${member.latitude},${member.longitude}'}) : null">
+        <button class="flex-1 flex items-center justify-center gap-1.5 h-10 rounded-xl bg-surface-container-low text-on-surface font-label-md text-label-md hover:bg-surface-container transition-colors" onclick="if(navigator.share){navigator.share({title:'${member.name}',url:'https://cousin-map.vercel.app'+window.location.pathname+'#/profile/${member.id}'}).catch(e=>console.log(e))}else{navigator.clipboard.writeText('https://cousin-map.vercel.app'+window.location.pathname+'#/profile/${member.id}');import('../components/snackbar.js').then(m=>m.showSnackbar('Link copied','info'))}">
           <span class="material-symbols-outlined text-[18px] text-secondary">share_location</span>
           <span>Share</span>
         </button>
