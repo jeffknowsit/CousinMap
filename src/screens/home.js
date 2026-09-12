@@ -215,7 +215,16 @@ export default async function HomeScreen(container) {
               </div>
               <span class="font-label-sm text-label-sm text-outline">Updated just now</span>
             </div>
-            <h1 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface mt-2 tracking-tight">Good Morning</h1>
+            ${(() => {
+              const hour = new Date().getHours();
+              const timeGreeting = hour < 12 ? 'Good Morning' : hour < 18 ? 'Good Afternoon' : 'Good Evening';
+              const crispPhrases = ['Welcome back', "Glad you're here", 'Ready to connect?', "Let's explore", 'Stay close'];
+              const randomPhrase = crispPhrases[Math.floor(Math.random() * crispPhrases.length)];
+              return `
+                <h1 class="font-headline-xl-mobile text-headline-xl-mobile text-on-surface mt-2 tracking-tight">${timeGreeting}</h1>
+                <h2 class="text-[20px] font-semibold text-on-surface-variant mt-1 tracking-tight">${randomPhrase}!</h2>
+              `;
+            })()}
             <p class="font-body-md text-body-md text-on-surface-variant mt-0.5">Everyone you love is on the map.</p>
           </div>
 
