@@ -2,6 +2,7 @@ import { renderBottomNav } from '../components/bottom-nav.js';
 import FamilyRepository from '../db/repository.js';
 import LocationService from '../services/location.js';
 import { formatDistance, calculateDistanceToMember } from '../services/distance.js';
+import { getWhatsAppLink } from '../utils/helpers.js';
 
 function getAvatarHtml(member, sizeClasses) {
   if (member && member.profile_image) {
@@ -71,7 +72,7 @@ export default async function HomeScreen(container) {
       const tintBg = idx % 2 === 0 ? 'to-amber-50/40' : 'to-primary-fixed/20';
       
       let phone = (m.phone_number || '').replace(/[^\d]/g, '');
-      const waLink = phone ? `https://wa.me/${phone}?text=Happy%20Birthday%20${m.name}!%20🎉🎂` : '#';
+      const waLink = getWhatsAppLink(phone, `Happy Birthday ${m.name}! 🎉🎂`);
       const callLink = phone ? `tel:${phone}` : '#';
 
       return `

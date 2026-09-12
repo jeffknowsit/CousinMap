@@ -34,7 +34,7 @@ export default async function MoreScreen(container) {
     {
       title: 'SUPPORT',
       items: [
-        { icon: 'support_agent', label: 'Contact Support', subtitle: 'Chat with us on WhatsApp', action: () => { window.open('https://wa.me/7012293909', '_blank'); } },
+        { icon: 'support_agent', label: 'Contact Support', subtitle: 'Chat with us on WhatsApp', action: () => { window.open('https://wa.me/917012293909', '_blank'); } },
       ],
     },
   ];

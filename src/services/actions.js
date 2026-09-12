@@ -1,3 +1,5 @@
+import { getWhatsAppLink } from '../utils/helpers.js';
+
 /**
  * Open Google Maps for directions to given coordinates
  */
@@ -27,9 +29,7 @@ export function sendEmail(email) {
  */
 export function openWhatsApp(phoneNumber) {
   if (!phoneNumber) return;
-  // Remove non-digit chars except +
-  const cleaned = phoneNumber.replace(/[^\d+]/g, '');
-  window.open(`https://wa.me/${cleaned.replace('+', '')}`, '_blank');
+  window.open(getWhatsAppLink(phoneNumber), '_blank');
 }
 
 /**

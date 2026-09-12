@@ -165,3 +165,15 @@ export function compressImage(file, maxWidth = 300, maxHeight = 300, quality = 0
     reader.onerror = (error) => reject(error);
   });
 }
+
+/**
+ * Generate a WhatsApp link with correct country code
+ */
+export function getWhatsAppLink(phone, text = '') {
+  if (!phone) return '#';
+  const cleanPhone = phone.toString().replace(/[^\d]/g, '');
+  if (!cleanPhone) return '#';
+  const waNumber = cleanPhone.length === 10 ? '91' + cleanPhone : cleanPhone;
+  const baseUrl = `https://wa.me/${waNumber}`;
+  return text ? `${baseUrl}?text=${encodeURIComponent(text)}` : baseUrl;
+}
