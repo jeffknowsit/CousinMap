@@ -87,16 +87,16 @@ export function getAvatarColor(name) {
  * Generate avatar HTML (image or initials)
  */
 export function avatarHTML(member, size = 48, rounded = 'full') {
-  const sizeClass = `w-[${size}px] h-[${size}px]`;
   const roundedClass = rounded === 'full' ? 'rounded-full' : 'rounded-2xl';
+  const sizeStyle = `width: ${size}px; height: ${size}px; min-width: ${size}px; min-height: ${size}px;`;
   
   if (member.profile_image) {
-    return `<img class="${sizeClass} ${roundedClass} object-cover shadow-sm" src="${member.profile_image}" alt="${member.name}">`;
+    return `<img class="${roundedClass} object-cover shadow-sm" style="${sizeStyle}" src="${member.profile_image}" alt="${member.name}">`;
   }
   
   const initials = getInitials(member.name);
   const color = getAvatarColor(member.name);
-  return `<div class="initials-avatar ${sizeClass} ${roundedClass} shadow-sm" style="background-color: ${color}; width: ${size}px; height: ${size}px; min-width: ${size}px; min-height: ${size}px; font-size: ${Math.round(size * 0.38)}px;">${initials}</div>`;
+  return `<div class="initials-avatar ${roundedClass} shadow-sm" style="background-color: ${color}; ${sizeStyle} font-size: ${Math.round(size * 0.38)}px;">${initials}</div>`;
 }
 
 /**

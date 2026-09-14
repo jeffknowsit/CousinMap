@@ -56,9 +56,9 @@ export function renderMemberCard(member, userLocation = null, options = {}) {
             `}
           </div>
           <div class="min-w-0">
-            <div class="flex items-center gap-1.5">
+            <div class="flex flex-col">
               <h2 class="font-headline-md text-headline-md text-on-surface truncate">${member.name}</h2>
-              <p class="font-body-sm text-[13px] text-on-surface-variant truncate max-w-[200px] mt-0.5">${member.description || ''}</p>
+              ${member.description ? `<p class="font-body-sm text-[13px] text-on-surface-variant truncate mt-0.5">${member.description}</p>` : ''}
             </div>
             <p class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-1 mt-0.5">
               <span class="text-tertiary-container font-semibold">📍</span>
