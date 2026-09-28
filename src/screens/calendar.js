@@ -400,7 +400,7 @@ function renderTodayCelebrations(todayEvents) {
     const phoneHref = e.phone ? `tel:${e.phone}` : '#';
     // Build wish link (WhatsApp if phone available)
     const cleanPhone = (e.phone || '').replace(/[^\d]/g, '');
-    const wishHref = cleanPhone ? getWhatsAppLink(cleanPhone, `Happy Birthday ${e.name.split(' ')[0]}! 🎉🎂`) : (e.phone ? `sms:${e.phone}` : '#');
+    const wishHref = cleanPhone ? getWhatsAppLink(cleanPhone, `Happy Birthday ${e.memberName.split(' ')[0]}! 🎉🎂`) : (e.phone ? `sms:${e.phone}` : '#');
 
     return `
       <div class="relative overflow-hidden rounded-2xl bg-gradient-to-br ${gradient} text-on-primary-container p-space-md shadow-md shrink-0 w-[310px] flex flex-col justify-between" style="scroll-snap-align: start;">
@@ -485,7 +485,7 @@ function renderUpcomingMilestones(upcoming) {
 
     // Build phone link for greeting
     const cleanPhone = (e.phone || '').replace(/[^\d]/g, '');
-    const greetHref = cleanPhone ? getWhatsAppLink(cleanPhone, `Happy Anniversary ${e.name}! 🎉🥳`) : (e.phone ? `sms:${e.phone}` : '#');
+    const greetHref = cleanPhone ? getWhatsAppLink(cleanPhone, `Happy Anniversary ${e.memberName}! 🎉🥳`) : (e.phone ? `sms:${e.phone}` : '#');
 
     return `
       <div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm transition-all hover:shadow-md cursor-pointer" onclick="window.location.hash='/profile/${e.memberId}'">
